@@ -1,22 +1,18 @@
-import { useState } from 'react'
-import Login from './components/Login'
-import Register from './components/Register'
-import { Route,  Routes } from 'react-router-dom'
-import Dashboard from './pages/Dashboard'
-
+import { useEffect, useState } from 'react'
+import AppRoutes from './routes/AppRoutes.jsx'
+import { useAuth } from './hooks/useAuth.js';
 
 
 const App = () => {
-  const [mode, setMode] = useState('login')
+  const {checkAuth} = useAuth()
+  useEffect(() => {
+   checkAuth();
+}, []);
 
   return (
    <div className="flex justify-center items-center h-screen w-full">
-    <Routes>
-      <Route path='/' element={<h1>Home</h1>}/>
-      <Route path='/login' element={<Login/>}/>
-      <Route path='/register' element={<Register />} />
-      <Route path='/dashboard' element={<Dashboard/>} />
-    </Routes>
+    <AppRoutes/>
+   
    </div>
   )
 }

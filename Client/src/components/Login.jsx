@@ -1,14 +1,18 @@
 import { useState } from 'react'
+import { useAuth } from "../hooks/useAuth";
+import { useNavigate } from 'react-router-dom';
+
 
 const initialForm = {
   email: '',
   password: '',
 }
-
 const Login = () => {
   const [form, setForm] = useState(initialForm)
   const [errors, setErrors] = useState({})
   const [successMessage, setSuccessMessage] = useState('')
+  const {login} = useAuth()
+  const navigate = useNavigate()
 
   const handleChange = (event) => {
     const { name, value } = event.target
@@ -42,9 +46,8 @@ const Login = () => {
       setSuccessMessage('')
       return
     }
-
-    setSuccessMessage('Login successful. Welcome back!')
-    console.log('Login submitted', form)
+     login(form)
+     navigate('/dashboard')
   }
 
   return (
