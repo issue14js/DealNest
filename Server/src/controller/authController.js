@@ -6,7 +6,7 @@ import bcrypt from "bcryptjs";
 
 async function userRegister(req, res) {
   try {
-    const { email,role, password, name } = req.body;
+    const { email, role, password, name } = req.body;
     const user = await userModel.findOne({ email }).select("+password");
     if (user) {
       return res.status(400).json({
@@ -18,7 +18,7 @@ async function userRegister(req, res) {
       name,
       email,
       password: hashpass,
-      role
+      role,
     });
     const token = jwt.sign({ id: newUser._id }, config.jwtSecret, {
       expiresIn: "5h",
@@ -35,7 +35,7 @@ async function userRegister(req, res) {
         name: newUser.name,
         email: newUser.email,
         avatar: newUser.avatar,
-        role:newUser.role,
+        role: newUser.role,
       },
     });
   } catch (err) {
@@ -61,6 +61,8 @@ async function userLogin(req, res) {
         message: "user not Avelable with this email or password",
       });
     }
+    user.lastLogin = new Date();
+    await user.save();
     const token = jwt.sign({ id: user._id }, config.jwtSecret, {
       expiresIn: "5h",
     });
@@ -77,8 +79,8 @@ async function userLogin(req, res) {
         name: user.name,
         email: user.email,
         avatar: user.avatar,
-        role:user.role,
-
+        role: user.role,
+        lastLogin:user.lastLogin,
       },
     });
   } catch (err) {
@@ -89,44 +91,138 @@ async function userLogin(req, res) {
     });
   }
 }
-async function userLogout(req,res){
-  try{
-    res.clearCookie("token",{
-      httpOnly:true,
-      secure:false,
-      sameSite:"lax"
-    })
+async function userLogout(req, res) {
+  try {
+    res.clearCookie("token", {
+      httpOnly: true,
+      secure: false,
+      sameSite: "lax",
+    });
     return res.status(200).json({
-      message:"User logout sucsessfully"
-    })
-
+      message: "User logout sucsessfully",
+    });
   } catch (err) {
-        console.log("Error user logout faild")
-        error: err.message
-
-    }
+    console.log("Error user logout faild");
+    error: err.message;
+  }
 }
-async function getMe(req,res){
-  try{
-    const user= req.user
+async function getMe(req, res) {
+  try {
+    const user = req.user;
     return res.status(201).json({
-      message:"user Get sucsessfully",
+      message: "user Get sucsessfully",
       user: {
         id: user._id,
         name: user.name,
         email: user.email,
         avatar: user.avatar,
-        role:user.role,
-
+        role: user.role,
+        lastLogin:user.lastLogin,
       },
-      
-       
-    })
-    
-  }catch(err){
-     console.log("Error user get faild")
-      error: err.message
-
+    });
+  } catch (err) {
+    console.log("Error user get faild");
+    error: err.message;
   }
 }
-export { userRegister, userLogin,userLogout, getMe};
+async function updateUser(req, res) {
+  try {
+    const user = req.user;
+    const { name, email, avatar, role } = req.body;
+    const newUser = await userModel.findOneAndUpdate(
+      { email: req.user.email },
+      {
+        name,
+        email,
+        avatar,
+        role,
+      },
+      {
+        returnDocument: "after",
+        runValidators: true,
+      },
+    );
+    return res.status(200).json({
+      message: "user Update sucsessfully",
+      user: {
+        name: newUser.name,
+        email: newUser.email,
+        role: newUser.role,
+        avatar: newUser.avatar,
+      },
+    });
+  } catch (err) {
+    return res.status(500).json({
+      message: "User Update falid ",
+      err,
+    });
+    console.log(err);
+  }
+}
+async function updateAvatar(req, res) {
+  try {
+    console.log("updateAvatar chala");
+
+    if (!req.file) {
+      return res.status(400).json({
+        message: "Avatar file is required",
+      });
+    }
+
+    const avatar = `/uploads/${req.file.filename}`;
+
+    const updatedUser = await userModel.findByIdAndUpdate(
+      req.user.id,
+      { avatar },
+      {
+        returnDocument: "after",
+        runValidators: true,
+      },
+    );
+
+    return res.status(200).json({
+      message: "Avatar updated successfully",
+      user: {
+        avatar: updatedUser.avatar,
+      },
+    });
+  } catch (err) {
+    console.log(err);
+
+    return res.status(500).json({
+      message: "Update Avatar failed",
+      error: err.message,
+    });
+  }
+}
+async function updatePassword(req,res){
+  try{
+    const user = req.user
+    const {currentpassword,newpassword} = req.body
+   const compairPass = await bcrypt.compare(currentpassword, user.password);
+    if (!compairPass) {
+      return res.status(404).json({
+        message: "user not Avelable with this email or password",
+      });
+    }
+    const hashpass = await bcrypt.hash(newpassword, 10);
+    const newUser = await userModel.findByIdAndUpdate(
+      user._id,
+      {
+        password:hashpass
+      }
+    )
+    return res.status(200).json({
+      message:"password change sucsessfully",
+      user:{
+        name:newUser.name,
+        email:newUser.email,
+        avatar:newUser.avatar,
+        role:newUser.role
+      }
+    })
+  }catch(err){
+    err:err.message
+  }
+}
+export { userRegister, userLogin, userLogout, getMe, updateUser, updateAvatar,updatePassword };

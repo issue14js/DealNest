@@ -16,7 +16,7 @@ export function AuthProvider({ children }) {
 
       setUser(response.data.user);
     } catch (err) {
-      setUser('');
+      setUser("");
     } finally {
       setLoading(false);
     }
@@ -50,6 +50,47 @@ export function AuthProvider({ children }) {
     }
   };
 
+  const updateProfile = async (formData) => {
+    try {
+      const resposne = await axios.put(
+        `${rootUrl}/api/auth/updateuser`,
+        formData,
+        { withCredentials: true },
+      );
+      console.log(resposne);
+      setUser(resposne.data.user);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  const changeDp = async (file) => {
+    try {
+      const formData = new FormData();
+
+      formData.append("avatar", file);
+
+      const response = await axios.patch(
+        `${rootUrl}/api/auth/updateavatar`,
+        formData,
+        { withCredentials: true },
+      );
+
+      setUser((prev) => ({
+        ...prev,
+        avatar: response.data.user.avatar,
+      }));
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  const changePassword = async (data) =>{
+    try{
+      const response = await axios.patch(`${rootUrl}/api/auth/updatepassword`,data,{withCredentials:true})
+      console.log(response)
+      }catch(err){
+      console.log(err)
+    }
+  }
   return (
     <AuthContext.Provider
       value={{
@@ -59,7 +100,11 @@ export function AuthProvider({ children }) {
         setLoading,
         register,
         login,
-        checkAuth
+        checkAuth,
+        updateProfile,
+        changeDp,
+        rootUrl,
+        changePassword
       }}
     >
       {children}

@@ -1,11 +1,12 @@
 import React from 'react'
 import { useAuth } from '../hooks/useAuth'
+import Navbar from '../components/Navbar'
 
 const Dashboard = () => {
     const {user} = useAuth()
   return (
-    <div>Dashboard
-        <h1>Hello{user.name}</h1>
+    <div className="h-screen w-full">
+      <Navbar/>
     </div>
   )
 }

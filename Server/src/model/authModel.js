@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 const userSchema = new mongoose.Schema({
-  name: { type: String ,required:true},
+  name: { type: String, required: true },
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true, select: false },
   avatar: {
@@ -15,11 +15,15 @@ const userSchema = new mongoose.Schema({
     default: "salesAgent",
     required: true,
   },
-    isActive:{
-      type:Boolean,
-      default:true
-    },
-    
+  lastLogin: {
+    type: Date,
+    default: null,
+  },
+  isActive: {
+    type: Boolean,
+    default: true,
+  },
+
   timestamp: { type: Date, default: Date.now },
 });
 

@@ -15,6 +15,7 @@ app.use(
 );
 
 app.use(cookieParser());
+app.use("/uploads", express.static("uploads"));
 
 app.get("/", (req, res) => {
   res.json({
