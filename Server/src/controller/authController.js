@@ -6,7 +6,7 @@ import bcrypt from "bcryptjs";
 
 async function userRegister(req, res) {
   try {
-    const { email, role, password, name } = req.body;
+    const { email, role, password, name,number,department } = req.body;
     const user = await userModel.findOne({ email }).select("+password");
     if (user) {
       return res.status(400).json({
@@ -19,6 +19,8 @@ async function userRegister(req, res) {
       email,
       password: hashpass,
       role,
+      number,
+      department
     });
     const token = jwt.sign({ id: newUser._id }, config.jwtSecret, {
       expiresIn: "5h",
@@ -36,6 +38,8 @@ async function userRegister(req, res) {
         email: newUser.email,
         avatar: newUser.avatar,
         role: newUser.role,
+        number:newUser.number,
+        department:newUser.department
       },
     });
   } catch (err) {
@@ -80,6 +84,8 @@ async function userLogin(req, res) {
         email: user.email,
         avatar: user.avatar,
         role: user.role,
+        number:user.number,
+        department:user.department,
         lastLogin: user.lastLogin,
       },
     });
@@ -118,6 +124,8 @@ async function getMe(req, res) {
         email: user.email,
         avatar: user.avatar,
         role: user.role,
+        number:user.number,
+        department:user.department,
         lastLogin: user.lastLogin,
       },
     });
@@ -129,7 +137,7 @@ async function getMe(req, res) {
 async function updateUser(req, res) {
   try {
     const user = req.user;
-    const { name, email, avatar, role } = req.body;
+    const { name, email, avatar, role,number,department } = req.body;
     const newUser = await userModel.findOneAndUpdate(
       { email: req.user.email },
       {
@@ -137,6 +145,8 @@ async function updateUser(req, res) {
         email,
         avatar,
         role,
+        number,
+        department
       },
       {
         returnDocument: "after",
@@ -150,6 +160,8 @@ async function updateUser(req, res) {
         email: newUser.email,
         role: newUser.role,
         avatar: newUser.avatar,
+        number:newUser.number,
+        department:newUser.department,
       },
     });
   } catch (err) {
@@ -227,6 +239,11 @@ async function updatePassword(req, res) {
     });
   }
 }
+async function getadmindata(req,res){
+  return res.status(201).json({
+    message:"chala re"
+  })
+}
 export {
   userRegister,
   userLogin,
@@ -235,4 +252,5 @@ export {
   updateUser,
   updateAvatar,
   updatePassword,
+  getadmindata
 };

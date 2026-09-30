@@ -14,6 +14,21 @@ const userSchema = new mongoose.Schema({
     default: "salesAgent",
     required: true,
   },
+  number: {
+  type: String,
+  trim: true,
+},
+
+department: {
+  type: String,
+  enum: [
+    "sales",
+    "marketing",
+    "development",
+    "support",
+    "hr",
+  ],
+},
   lastLogin: {
     type: Date,
     default: null,

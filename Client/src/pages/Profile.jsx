@@ -14,6 +14,8 @@ const Profile = () => {
     name: user?.name || "",
     email: user?.email || "",
     role: user?.role || "",
+    number: user?.number || "",
+    department: user?.department || "",
   });
   const [passwordform, setpasswordform] = useState({
     currentpassword: "",
@@ -58,7 +60,7 @@ const Profile = () => {
   return (
     <div className="flex  flex-col h-screen w-full">
       <div className="h-[10%] min-h-20 shrink-0 w-full  ">
-       <Navbar/>
+        <Navbar />
       </div>
       <div className=" w-full gap-2 flex-col lg:flex-row  p-2 flex ">
         <div className=" gap-5 flex flex-col  w-full lg:w-[60%] lg:grid lg:grid-rows-[25%_70%] lg:gap-3 ">
@@ -123,6 +125,9 @@ const Profile = () => {
                   Number
                 </label>
                 <input
+                  name="number"
+                  onChange={handleChange}
+                  value={form.number}
                   className="w-full rounded-xl shadow shadow-outline outline-none px-4 h-10 bg-surface-container"
                   type="text"
                 />
@@ -135,7 +140,12 @@ const Profile = () => {
                   name="role"
                   value={form.role}
                   onChange={handleChange}
-                  className=" outline-none shadow shadow-outline-variant w-full  rounded-xl px-4 py-3"
+                  className={` outline-none shadow shadow-outline-variant w-full  rounded-xl px-4 py-3 
+                    ${
+                    user.role !== "admin" && user.role !== "manager"
+                      ? "hidden"
+                      : ""
+                  }`}
                   id=""
                 >
                   <option
@@ -163,11 +173,19 @@ const Profile = () => {
                     Support Agent
                   </option>
                 </select>
+                <div className=" outline-none shadow bg-surface-container shadow-outline-variant w-full rounded-xl px-4 py-2 ">
+                  <h1>{user.role}</h1>
+                </div>
               </div>
               <div className=" mt-2  col-span-2 ">
                 <label className="">Department</label>
 
-                <select className="outline-none   shadow shadow-outline-variant w-full  rounded-xl px-4 py-3">
+                <select
+                  name="department"
+                  value={form.department}
+                  onChange={handleChange}
+                  className="outline-none   shadow shadow-outline-variant w-full  rounded-xl px-4 py-3"
+                >
                   <option value="sales">Sales</option>
                   <option value="marketing">Marketing</option>
                   <option value="development">Development</option>

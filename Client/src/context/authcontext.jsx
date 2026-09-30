@@ -58,7 +58,6 @@ export function AuthProvider({ children }) {
       console.log(response)
     }
   }
-
   const updateProfile = async (formData) => {
     try {
       const resposne = await axios.put(

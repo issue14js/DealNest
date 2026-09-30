@@ -7,15 +7,22 @@ const Register = () => {
     name: "",
     email: "",
     password: "",
-    role: "",
+    department: "",
   };
-  
-  const {register} = useAuth()
-  const roleOptions = ["admin", "manager", "salesAgent", "supportAgent"];
+
+  const { register } = useAuth();
+  const [showPassword, setShowPassword] = useState(false);
+  const departmentOptions = [
+    "sales",
+    "marketing",
+    "development",
+    "support",
+    "hr",
+  ];
   const [form, setForm] = useState(initialForm);
   const [errors, setErrors] = useState({});
   const [successMessage, setSuccessMessage] = useState("");
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const handleChange = (event) => {
     const { name, value } = event.target;
     setForm((prev) => ({ ...prev, [name]: value }));
@@ -40,10 +47,6 @@ const Register = () => {
       nextErrors.password = "Password is required.";
     }
 
-    if (!form.role) {
-      nextErrors.role = "Role is required.";
-    }
-
     return nextErrors;
   };
 
@@ -57,14 +60,16 @@ const Register = () => {
       return;
     }
 
-    await register(form)
-    navigate('/dashboard')
-
-
+    await register(form);
+    navigate("/dashboard");
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-3 shadow-perssed shadow-2xl p-5 rounded-2xl " noValidate>
+    <form
+      onSubmit={handleSubmit}
+      className="space-y-3 shadow-perssed shadow-2xl p-5 rounded-2xl "
+      noValidate
+    >
       <div className="mb-3 text-center">
         <h1 className="text-2xl font-semibold text-primary">Register</h1>
         <p className="mt-2 text-sm text-on-surface-variant">
@@ -135,20 +140,25 @@ const Register = () => {
         >
           Password
         </label>
-        <input
-          id="register-password"
-          name="password"
-          type="password"
-          value={form.password}
-          onChange={handleChange}
-          placeholder="Create a password"
-          aria-invalid={Boolean(errors.password)}
-          className={`w-full rounded-xl border bg-surface-container-low px-3 py-2.5 text-base text-on-surface placeholder:text-on-surface-variant outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20 ${
-            errors.password
-              ? "border-error bg-error-container"
-              : "border-outline-variant"
-          }`}
-        />
+        <div className="relative">
+          <input
+            id="register-password"
+            name="password"
+            type={showPassword ? "text" : "password"}
+            value={form.password}
+            onChange={handleChange}
+            placeholder="Create a password"
+            className="w-full rounded-xl shadow shadow-outline-variant bg-surface-container-low px-3 py-2.5 pr-10 outline-none"
+          />
+
+          <button
+            type="button"
+            onClick={() => setShowPassword((prev) => !prev)}
+            className="absolute right-3 top-1/2 -translate-y-1/2"
+          >
+            {showPassword ? "🙈" : "👁️"}
+          </button>
+        </div>
         {errors.password && (
           <p className="rounded-md bg-error-container px-2 py-1 text-sm text-error">
             {errors.password}
@@ -158,15 +168,15 @@ const Register = () => {
 
       <div className="space-y-2">
         <label
-          htmlFor="register-role"
+          htmlFor="register-department"
           className="block text-sm font-medium text-on-surface"
         >
-          Role
+          Department
         </label>
         <select
-          id="register-role"
-          name="role"
-          value={form.role}
+          id="register-department"
+          name="department"
+          value={form.department}
           onChange={handleChange}
           aria-invalid={Boolean(errors.role)}
           className={`w-full rounded-xl border bg-surface-container-low px-3 py-2.5 text-base text-on-surface outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20 ${
@@ -175,15 +185,15 @@ const Register = () => {
               : "border-outline-variant"
           }`}
         >
-          {roleOptions.map((role) => (
-            <option key={role} value={role}>
-              {role}
+          {departmentOptions.map((department) => (
+            <option key={department} value={department}>
+              {department}
             </option>
           ))}
         </select>
-        {errors.role && (
+        {errors.department && (
           <p className="rounded-md bg-error-container px-2 py-1 text-sm text-error">
-            {errors.role}
+            {errors.department}
           </p>
         )}
       </div>
@@ -200,7 +210,12 @@ const Register = () => {
       >
         Register
       </button>
-      <span className="text-[12px] w-full mt-1 justify-center flex gap-1">You have an acount <a className="text-primary " href="/login">Login</a> </span>
+      <span className="text-[12px] w-full mt-1 justify-center flex gap-1">
+        You have an acount{" "}
+        <a className="text-primary " href="/login">
+          Login
+        </a>{" "}
+      </span>
     </form>
   );
 };
