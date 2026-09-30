@@ -46,9 +46,18 @@ export function AuthProvider({ children }) {
       return response.data;
     } catch (err) {
       console.log("login faild", err);
-      return err;
+      throw err;  
     }
   };
+  const logout = async ()=>{
+    try{
+     const  resposne = await axios.post(`${rootUrl}/api/auth/logout`,{},{withCredentials:true})
+     setUser(null);
+    }catch(err){
+      console.log(err)
+      console.log(response)
+    }
+  }
 
   const updateProfile = async (formData) => {
     try {
@@ -100,6 +109,7 @@ export function AuthProvider({ children }) {
         setLoading,
         register,
         login,
+        logout,
         checkAuth,
         updateProfile,
         changeDp,

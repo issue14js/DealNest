@@ -13,11 +13,11 @@ import { useAuth } from "../hooks/useAuth";
 
 const Navbar = () => {
   const navigate = useNavigate()
-  const { user } = useAuth();
+  const { user,rootUrl } = useAuth();
   const [Dropwown, setDropwown] = useState(false)
 
   return (
-    <div className="lg:h-20 h-15 w-full flex items-center justify-between gap-3 py-2 px-3 sm:px-4 bg-background shadow  ">
+    <div className="h-20  w-full flex items-center justify-between gap-3 py-2 px-3 sm:px-4 bg-background shadow  ">
 
       {/* Left Section */}
       <div className="flex gap-2 sm:gap-4 items-center min-w-0 flex-1">
@@ -25,7 +25,7 @@ const Navbar = () => {
         {/* Logo */}
         <img
           onClick={()=>{navigate('/')}}
-          className="h-9 w-9  cursor-pointer sm:h-10 sm:w-10  shrink-0"
+          className="h-9 w-9   object-center object-cover cursor-pointer sm:h-10 sm:w-10  shrink-0"
           src="/icons.svg"
           alt="App_logo"
         />
@@ -71,7 +71,7 @@ const Navbar = () => {
 
           <img
             className=" rounded-full h-9 w-9 sm:h-10 sm:w-10 shrink-0"
-            src={user?.avatar}
+            src={`${rootUrl}${user.avatar}`}
             alt=""
           />
 

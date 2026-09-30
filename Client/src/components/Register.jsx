@@ -175,7 +175,6 @@ const Register = () => {
               : "border-outline-variant"
           }`}
         >
-          <option value="">Select a role</option>
           {roleOptions.map((role) => (
             <option key={role} value={role}>
               {role}

@@ -1,9 +1,15 @@
 import React, { useState } from "react";
 import { useAuth } from "../hooks/useAuth";
+import { useNavigate } from "react-router-dom";
+import Navbar from "../components/Navbar";
 
 const Profile = () => {
-  const { user, updateProfile, changeDp, rootUrl,changePassword} = useAuth();
+  const { user, updateProfile, changeDp, rootUrl, changePassword, logout } =
+    useAuth();
   const [changepassdropdown, setchangepassdropdown] = useState(false);
+  const { navigate } = useNavigate();
+  const [showCurrent, setShowCurrent] = useState(false);
+  const [showNew, setShowNew] = useState(false);
   const [form, setForm] = useState({
     name: user?.name || "",
     email: user?.email || "",
@@ -41,13 +47,19 @@ const Profile = () => {
   const changePass = (event) => {
     event.preventDefault();
     setchangepassdropdown((prev) => !prev);
-    changePassword(passwordform)
+    changePassword(passwordform);
     console.log(passwordform);
+  };
+  const handelLogout = () => {
+    logout();
+    // navigate('/login')
   };
 
   return (
     <div className="flex  flex-col h-screen w-full">
-      <div className="h-[10%] min-h-20 shrink-0 w-full border border-outline"></div>
+      <div className="h-[10%] min-h-20 shrink-0 w-full  ">
+       <Navbar/>
+      </div>
       <div className=" w-full gap-2 flex-col lg:flex-row  p-2 flex ">
         <div className=" gap-5 flex flex-col  w-full lg:w-[60%] lg:grid lg:grid-rows-[25%_70%] lg:gap-3 ">
           {/* Basic info */}
@@ -227,42 +239,68 @@ const Profile = () => {
 
               {/* Divider */}
               <div
-                className={`${
-                  changepassdropdown ? "flex" : "hidden"
+                className={`relative ${
+                  changepassdropdown ? " flex-col flex lg:flex-row" : "hidden"
                 } gap-2 p-2`}
               >
-                <div className="flex w-1/2 flex-col">
-                  <label>Current Password</label>
+                <div className="flex w-full flex-col">
+                  <label htmlFor="currentpassword">Current Password</label>
 
                   <input
-                    onChange={handleChangepass}
-                    required
+                    id="currentpassword"
                     name="currentpassword"
+                    type={showCurrent ? "text" : "password"}
+                    required
+                    minLength={6}
                     value={passwordform.currentpassword}
-                    className="h-10 rounded-xl bg-surface-container px-2 shadow shadow-outline outline-none"
-                    type="password"
+                    onChange={handleChangepass}
+                    className="h-10 w-full rounded-xl bg-surface-container px-2 shadow shadow-outline outline-none"
                   />
                 </div>
 
-                <div className="flex w-1/2 flex-col">
-                  <label>New Password</label>
+                <div className="flex w-full flex-col">
+                  <label htmlFor="newpassword">New Password</label>
 
                   <input
-                    onChange={handleChangepass}
-                    required
+                    id="newpassword"
                     name="newpassword"
+                    type={showCurrent ? "text" : "password"}
+                    required
+                    minLength={6}
                     value={passwordform.newpassword}
-                    className="h-10 rounded-xl bg-surface-container px-2 shadow shadow-outline outline-none"
-                    type="password"
+                    onChange={handleChangepass}
+                    className="h-10 w-full rounded-xl bg-surface-container px-2 shadow shadow-outline outline-none"
                   />
                 </div>
+                <button
+                  type="button"
+                  onClick={() => setShowCurrent((prev) => !prev)}
+                  className="absolute right-2 cursor-pointer"
+                >
+                  {showCurrent ? "🙈" : "👁️"}
+                </button>
               </div>
 
               {/* Last Login */}
-              <div className="pt-4">
+              <div className=" relative pt-4">
                 <p className="text-sm">Last login</p>
 
-                <p className="mt-1 text-sm">{user?.lastLogin || "no data"}</p>
+                <p className="mt-1  text-sm">
+                  {user?.lastLogin
+                    ? new Date(user.lastLogin).toLocaleString("en-IN", {
+                        day: "numeric",
+                        month: "short",
+                        hour: "numeric",
+                        minute: "2-digit",
+                      })
+                    : "No login yet"}
+                </p>
+                <button
+                  onClick={handelLogout}
+                  className="absolute lg:left-90 left-45  px-4 py-2 bg-primary text-surface-bright font-semibold hover:bg-outline-variant hover:text-primary  bottom-2 rounded-xl"
+                >
+                  Logout
+                </button>
               </div>
             </div>
           </div>

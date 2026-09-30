@@ -80,7 +80,7 @@ async function userLogin(req, res) {
         email: user.email,
         avatar: user.avatar,
         role: user.role,
-        lastLogin:user.lastLogin,
+        lastLogin: user.lastLogin,
       },
     });
   } catch (err) {
@@ -93,6 +93,7 @@ async function userLogin(req, res) {
 }
 async function userLogout(req, res) {
   try {
+    // console.log(req.cookies.token)
     res.clearCookie("token", {
       httpOnly: true,
       secure: false,
@@ -103,7 +104,7 @@ async function userLogout(req, res) {
     });
   } catch (err) {
     console.log("Error user logout faild");
-    error: err.message;
+    console.log(err);
   }
 }
 async function getMe(req, res) {
@@ -117,7 +118,7 @@ async function getMe(req, res) {
         email: user.email,
         avatar: user.avatar,
         role: user.role,
-        lastLogin:user.lastLogin,
+        lastLogin: user.lastLogin,
       },
     });
   } catch (err) {
@@ -195,34 +196,43 @@ async function updateAvatar(req, res) {
     });
   }
 }
-async function updatePassword(req,res){
-  try{
-    const user = req.user
-    const {currentpassword,newpassword} = req.body
-   const compairPass = await bcrypt.compare(currentpassword, user.password);
+async function updatePassword(req, res) {
+  try {
+    const { currentpassword, newpassword } = req.body;
+
+    const user = await userModel.findById(req.user._id).select("+password");
+
+    const compairPass = await bcrypt.compare(currentpassword, user.password);
+
     if (!compairPass) {
-      return res.status(404).json({
-        message: "user not Avelable with this email or password",
+      return res.status(400).json({
+        message: "Current password is incorrect",
       });
     }
+
     const hashpass = await bcrypt.hash(newpassword, 10);
-    const newUser = await userModel.findByIdAndUpdate(
-      user._id,
-      {
-        password:hashpass
-      }
-    )
+
+    await userModel.findByIdAndUpdate(user._id, {
+      password: hashpass,
+    });
+
     return res.status(200).json({
-      message:"password change sucsessfully",
-      user:{
-        name:newUser.name,
-        email:newUser.email,
-        avatar:newUser.avatar,
-        role:newUser.role
-      }
-    })
-  }catch(err){
-    err:err.message
+      message: "Password changed successfully",
+    });
+  } catch (err) {
+    console.log(err);
+
+    return res.status(500).json({
+      message: "Password update failed",
+    });
   }
 }
-export { userRegister, userLogin, userLogout, getMe, updateUser, updateAvatar,updatePassword };
+export {
+  userRegister,
+  userLogin,
+  userLogout,
+  getMe,
+  updateUser,
+  updateAvatar,
+  updatePassword,
+};
