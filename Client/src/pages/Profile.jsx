@@ -54,7 +54,6 @@ const Profile = () => {
   };
   const handelLogout = () => {
     logout();
-    // navigate('/login')
   };
 
   return (

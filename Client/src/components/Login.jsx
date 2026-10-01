@@ -49,7 +49,7 @@ const Login = () => {
 
     try {
       await login(form);
-      navigate("/dashboard");
+      navigate("/");
     } catch (err) {
       console.log(err);
     }

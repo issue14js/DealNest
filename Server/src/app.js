@@ -1,5 +1,6 @@
 import express from "express";
 import authRoute from "./routes/authRoute.js";
+import leadRoute from "./routes/leadRoute.js"
 import cookieParser from "cookie-parser";
 import cors from "cors";
 
@@ -20,10 +21,11 @@ app.use("/uploads", express.static("uploads"));
 app.get("/", (req, res) => {
   res.json({
     success: true,
-    message: "Charcha API is running",
+    message: "DealNest API is running",
   });
 });
 
 app.use("/api/auth", authRoute);
+app.use("/api/lead",leadRoute)
 
 export default app; 

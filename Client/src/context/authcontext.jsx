@@ -55,7 +55,6 @@ export function AuthProvider({ children }) {
      setUser(null);
     }catch(err){
       console.log(err)
-      console.log(response)
     }
   }
   const updateProfile = async (formData) => {

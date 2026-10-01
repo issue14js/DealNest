@@ -29,6 +29,11 @@ department: {
     "hr",
   ],
 },
+manager: {
+  type: mongoose.Schema.Types.ObjectId,
+  ref: "User",
+  default: null
+},
   lastLogin: {
     type: Date,
     default: null,

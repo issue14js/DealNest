@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import AppRoutes from './routes/AppRoutes.jsx'
 import { useAuth } from './hooks/useAuth.js';
+import Sidebar from './components/Sidebar.jsx';
 
 
 const App = () => {

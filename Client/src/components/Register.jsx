@@ -61,7 +61,7 @@ const Register = () => {
     }
 
     await register(form);
-    navigate("/dashboard");
+    navigate("/");
   };
 
   return (
