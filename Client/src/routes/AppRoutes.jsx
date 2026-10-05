@@ -5,7 +5,7 @@ import Register from "../components/Register.jsx";
 import ProtectedRoute from "../components/ProtectedRoute";
 import Layout from "../pages/Layout.jsx";
 import Profile from "../pages/Profile.jsx";
-import LeadsCustomers from "../pages/LeadsCustomers.jsx";
+import LeadsCustomers from "../components/LeadsCustomers.jsx";
 
 const AppRoutes = () => {
   return (

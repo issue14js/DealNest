@@ -20,12 +20,12 @@ const Navbar = () => {
     <div className="h-20  w-full flex items-center justify-between gap-3 py-2 px-3 sm:px-4 bg-background shadow  ">
 
       {/* Left Section */}
-      <div className="flex gap-2 sm:gap-4 items-center min-w-0 flex-1">
+      <div className="flex gap-2 lg:gap-4 items-center min-w-0 flex-1">
 
         {/* Logo */}
         <img
           onClick={()=>{navigate('/')}}
-          className="h-9 w-9   object-center object-cover cursor-pointer sm:h-10 sm:w-10  shrink-0"
+          className="h-9 w-9   object-center object-cover cursor-pointer lg:h-10 lg:w-10  shrink-0"
           src="/icons.svg"
           alt="App_logo"
         />
@@ -51,7 +51,7 @@ const Navbar = () => {
       <div className="flex gap-2 sm:gap-4 h-11 items-center shrink-0">
 
         {/* New Lead */}
-        <button className="flex cursor-pointer rounded-4xl px-3 sm:px-4 py-2 shadow-outline shadow shadow-primary items-center gap-1 bg-primary-container text-surface-bright">
+        <button className="flex cursor-pointer rounded-4xl px-3 sm:px-4 py-2 shadow-outline shadow  items-center gap-1 bg-primary-container text-surface-bright">
           <RiAddLine size={18} />
           <span className="hidden lg:inline">New Lead</span>
         </button>
@@ -70,7 +70,7 @@ const Navbar = () => {
         <div className="relative shadow-outline shadow flex gap-1 items-center rounded-4xl p-1">
 
           <img
-            className=" rounded-full h-9 w-9 sm:h-10 sm:w-10 shrink-0"
+            className=" rounded-full object-cover object-center  h-9 w-9 sm:h-10 sm:w-10 shrink-0"
             src={`${rootUrl}${user.avatar}`}
             alt=""
           />

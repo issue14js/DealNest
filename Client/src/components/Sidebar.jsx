@@ -12,7 +12,7 @@ import {
 } from "@remixicon/react";
 import { useNavigate } from "react-router-dom";
 
-const Sidebar = () => {
+const Sidebar = ({setTabs}) => {
   const [click, setclick] = useState("");
   const navigate = useNavigate()
 
@@ -24,6 +24,7 @@ const Sidebar = () => {
   };
   const handelCustomerLead = () => {
     setclick("CustomerLead");
+    setTabs("CustomerLead")
   };
   const handelLead360Detail = () => {
     setclick("Lead360Detail");
