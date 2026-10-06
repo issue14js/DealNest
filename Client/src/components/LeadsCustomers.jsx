@@ -1,11 +1,22 @@
 import React, { useState } from "react";
-import { RiArrowRightSLine, RiSearchLine } from "@remixicon/react";
+import {
+  RiArrowRightSLine,
+  RiSearchLine,
+  RiRefreshLine,
+  RiGlobalLine,
+  RiCircleFill,
+  RiEyeLine,
+  RiPencilLine,
+  RiMore2Line,
+  RiAddLine
+} from "@remixicon/react";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
+import LeadComponents from "./leadComponents";
 
 const LeadsCustomers = (tabs) => {
   const navigate = useNavigate();
-  const [filter, setfilter] = useState("");
+  const [filter, setfilter] = useState("All_Leads");
 
   const ClickAllLeads = () => {
     setfilter("All_Leads");
@@ -35,7 +46,7 @@ const LeadsCustomers = (tabs) => {
           </p>{" "}
           <RiArrowRightSLine /> Leads & Customers{" "}
         </span>
-        <div className="w-full p-2  ">
+        <div className="w-full justify-between flex p-2  ">
           <div className="">
             <h1 className="text-3xl">Leads & Customers</h1>
             <span className="text-sm font-w opacity-60">
@@ -44,10 +55,16 @@ const LeadsCustomers = (tabs) => {
               and round-robin allocation.
             </span>
           </div>
+          <div className="flex items-end justify-end h-20 w-1/2">
+            <button className="flex cursor-pointer rounded-4xl px-3 sm:px-4 py-2 shadow-outline shadow  items-center gap-1 bg-primary-container text-surface-bright">
+          <RiAddLine size={18} />
+          <span className="hidden lg:inline">New Lead</span>
+        </button>
+          </div>
         </div>
       </div>
       {/* Tabs */}
-      <div className=" py-2 rounded overflow-x-auto w-full shadow-[inset_0_0_4px_rgba(0,0,0,0.08)] shadow-outline flex justify-around ">
+      <div className=" py-2 rounded overflow-x-auto  flex justify-around [scrollbar-width:none] [&::-webkit-scrollbar]:hidden  w-full shadow-[inset_0_0_4px_rgba(0,0,0,0.08)] shadow-outline ">
         <button
           onClick={ClickAllLeads}
           className={` cursor-pointer ${filter == "All_Leads" ? " shadow shadow-on-surface-variant" : ""} outline-none rounded px-4 py-2  `}
@@ -73,26 +90,106 @@ const LeadsCustomers = (tabs) => {
           Archived <span>99</span>{" "}
         </button>
       </div>
-      {/* Search */}
-      <div className=" items-center gap-10 flex px-4 py-2 h-20 w-full">
-        <div className="shadow-[inset_0_0_4px_rgba(0,0,0,0.08)]  border-outline-variant items-center px-3 sm:px-4 gap-2 flex h-10 sm:h-11 rounded-4xl outline-none overflow-hidden  w-50 ">
-          <RiSearchLine size={18} className="shrink-0" />
-          <input
-            className="outline-none h-full w-full min-w-0 bg-transparent"
-            type="search"
-            placeholder="Search"
-          />
-        </div>
-        <div className=" items-center shadow-[inset_0_0_4px_rgba(0,0,0,0.08)] p-3 rounded-2xl flex ">
-          <h1>Status:</h1>
-          <select className="rounded-xl flex justify-center outline-none ">
-            <option value="">All</option>
-            <option value="new">New</option>
-            <option value="contacted">Contacted</option>
-            <option value="qualified">Qualified</option>
-          </select>
+      {/* Search and filter */}
+      <div className="overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        <div className="className= flex w-full  lg:flex-wrap items-center gap-2 px-4 py-2">
+          {/* SEARCH */}
+          <div className="flex h-10 w-30 shrink-0 items-center gap-2 overflow-hidden rounded-4xl border border-outline px-3 shadow-[inset_0_0_5px_rgba(0,0,0,0.08)]  sm:h-11 lg:w-120">
+            <RiSearchLine size={18} className="shrink-0" />
+
+            <input
+              className="h-full min-w-0 flex-1 bg-transparent outline-none"
+              type="search"
+              placeholder="Search"
+            />
+          </div>
+
+          {/* STATUS */}
+          <div className="flex h-10 shrink-0 items-center rounded-4xl border border-outline px-3 shadow-[inset_0_0_5px_rgba(0,0,0,0.08)]">
+            <span className="text-[11px]">STATUS:</span>
+
+            <select className="bg-transparent text-sm font-semibold text-primary outline-none">
+              <option value="">All</option>
+              <option value="new">New</option>
+              <option value="contacted">Contacted</option>
+              <option value="qualified">Qualified</option>
+            </select>
+          </div>
+
+          {/* SOURCE */}
+          <div className="flex h-10 shrink-0 items-center rounded-4xl border border-outline px-3 shadow-[inset_0_0_5px_rgba(0,0,0,0.08)]">
+            <span className="text-[11px]">SOURCE:</span>
+
+            <select className="bg-transparent text-sm font-semibold text-primary outline-none">
+              <option value="">All</option>
+              <option value="website">Website</option>
+              <option value="referral">Referral</option>
+              <option value="social">Social Media</option>
+            </select>
+          </div>
+
+          {/* ASSIGNED TO */}
+          <div className="flex h-10 shrink-0 items-center rounded-4xl border border-outline px-3 shadow-[inset_0_0_5px_rgba(0,0,0,0.08)]">
+            <span className="text-[11px]">ASSIGNED:</span>
+
+            <select className="bg-transparent text-sm font-semibold text-primary outline-none">
+              <option value="">All</option>
+              <option value="user1">User 1</option>
+              <option value="user2">User 2</option>
+            </select>
+          </div>
+
+          <button className="shrink-0 rounded-full p-2">
+            <RiRefreshLine />
+          </button>
         </div>
       </div>
+
+        {/* Leads Data */}
+        <div className=" overflow-auto  h-70  [scrollbar-width:none] [&::-webkit-scrollbar]:hidden ">
+          <div className="lg:w-full flex lg:justify-between items-center lg:px-4 py-2 lg:gap-0  px-2 gap-11 ">
+            <h1 className="whitespace-nowrap lg:text-m text-[10px] lg:text-base">ID</h1>
+            <h1 className="whitespace-nowrap lg:text-m text-[10px] lg:text-base relative lg:right-4 right-2">
+              Name & Company
+            </h1>
+            <h1 className="whitespace-nowrap lg:text-m text-[10px] lg:text-base relative right-7 ">SOURCE</h1>
+            <h1 className="whitespace-nowrap lg:text-m text-[10px] lg:text-base relative right-6  ">STATUS</h1>
+            <h1 className="whitespace-nowrap lg:text-m text-[10px] lg:text-base relative right-2">
+              ASSIGNED TO
+            </h1>
+            <h1 className="whitespace-nowrap lg:text-m text-[10px] lg:text-base lg:mr-4 relative right-4 ">ACTION</h1>
+          </div>
+          <LeadComponents/>
+          <LeadComponents/>
+          <LeadComponents/>
+          <LeadComponents/>
+          <LeadComponents/>
+          <LeadComponents/>
+          <LeadComponents/>
+          <LeadComponents/>
+          <LeadComponents/>
+          <LeadComponents/>
+          <LeadComponents/>
+          <LeadComponents/>
+          <LeadComponents/>
+          <LeadComponents/>
+          <LeadComponents/>
+          <LeadComponents/>
+          <LeadComponents/>
+          <LeadComponents/>
+          <LeadComponents/>
+          <LeadComponents/>
+          <LeadComponents/>
+          <LeadComponents/>
+          <LeadComponents/>
+          <LeadComponents/>
+          <LeadComponents/>
+          <LeadComponents/>
+          <LeadComponents/>
+          <LeadComponents/>
+          <LeadComponents/>
+          <LeadComponents/>
+        </div>
     </div>
   );
 };

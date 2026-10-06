@@ -18,9 +18,11 @@ const Sidebar = ({setTabs}) => {
 
   const handelDashboard = () => {
     setclick("Dashboard");
+    setTabs("Dashboard")
   };
   const handelDealsPipeline = () => {
     setclick("DealsPipeline");
+    setTabs("DealsPipeline")
   };
   const handelCustomerLead = () => {
     setclick("CustomerLead");
@@ -28,21 +30,27 @@ const Sidebar = ({setTabs}) => {
   };
   const handelLead360Detail = () => {
     setclick("Lead360Detail");
+    setTabs("Lead360Detail")
   };
   const handelTaskQueueFollowUps = () => {
-    setclick("TaskQueueFollow-ups");
+    setclick("TaskQueueFollow");
+    setTabs("TaskQueueFollow")
   };
   const handelActivitiesTimeline = () => {
     setclick("ActivitiesTimeline");
+    setTabs("ActivitiesTimeline")
   };
   const handelEmailHub = () => {
     setclick("EmailHub");
+    setTabs("EmailHub")
   };
   const handelReportsExport = () => {
     setclick("ReportsExport");
+    setTabs("ReportsExport")
   };
   const handelAdminRBACSettings = () => {
     setclick("AdminRBACSettings");
+    setTabs("AdminRBACSettings")
   };
   return (
     <div className=" lg:h-142 h-180  relative gap-2 flex flex-col shadow-[0_4px_6px_-2px] shadow-outline py-4 px-3 w-[20%]">
@@ -84,7 +92,7 @@ const Sidebar = ({setTabs}) => {
       </div>
       <div
         onClick={handelTaskQueueFollowUps}
-        className={`cursor-pointer rounded-xl items-center flex px-4 w-full bg-background h-10  ${click === "TaskQueueFollow-ups" ? "shadow-[inset_0_0_15px_rgba(0,0,0,0.15)] text-primary font-semibold" : ""} `}
+        className={`cursor-pointer rounded-xl items-center flex px-4 w-full bg-background h-10  ${click === "TaskQueueFollow" ? "shadow-[inset_0_0_15px_rgba(0,0,0,0.15)] text-primary font-semibold" : ""} `}
       >
         <h2 className="flex gap-2 text-sm items-center ">
           {" "}

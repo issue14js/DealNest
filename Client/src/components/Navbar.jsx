@@ -51,10 +51,7 @@ const Navbar = () => {
       <div className="flex gap-2 sm:gap-4 h-11 items-center shrink-0">
 
         {/* New Lead */}
-        <button className="flex cursor-pointer rounded-4xl px-3 sm:px-4 py-2 shadow-outline shadow  items-center gap-1 bg-primary-container text-surface-bright">
-          <RiAddLine size={18} />
-          <span className="hidden lg:inline">New Lead</span>
-        </button>
+      
 
         {/* Calendar */}
         <button className="hidden sm:flex cursor-pointer bg-amber-50 p-3 rounded-full  shadow-outline shadow ">
