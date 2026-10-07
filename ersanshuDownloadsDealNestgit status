@@ -1,0 +1,5 @@
+[33m3c1031b[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m)[m feat: Implement lead context and hooks for lead management; update App and LeadsCustomers components to utilize lead data; enhance LeadComponents layout and functionality
+[33mf90d972[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m feat: Update title in index.html, enhance LeadsCustomers component with new layout and filtering options, and add LeadComponents for displaying lead data; refactor Sidebar and Navbar for improved navigation
+[33m997bda7[m feat: Add LeadsCustomers component and integrate it into the dashboard layout; update Sidebar and Navbar components for improved navigation
+[33m1d5960e[m feat: Add sidebar component and integrate layout for dashboard; update navigation routes and lead management features
+[33m5cd31e2[m fix some bugs in profile feature and add rolemiddilware
