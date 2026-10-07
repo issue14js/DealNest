@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useLead } from "../hooks/uselead";
 import {
   RiArrowRightSLine,
   RiSearchLine,
@@ -8,16 +9,18 @@ import {
   RiEyeLine,
   RiPencilLine,
   RiMore2Line,
-  RiAddLine
+  RiAddLine,
 } from "@remixicon/react";
 import { useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom";
+import { Link  } from "react-router-dom";
 import LeadComponents from "./leadComponents";
 
+
 const LeadsCustomers = (tabs) => {
+  const lead=useLead()
   const navigate = useNavigate();
   const [filter, setfilter] = useState("All_Leads");
-
+console.log(lead)
   const ClickAllLeads = () => {
     setfilter("All_Leads");
   };
@@ -57,9 +60,9 @@ const LeadsCustomers = (tabs) => {
           </div>
           <div className="flex items-end justify-end h-20 w-1/2">
             <button className="flex cursor-pointer rounded-4xl px-3 sm:px-4 py-2 shadow-outline shadow  items-center gap-1 bg-primary-container text-surface-bright">
-          <RiAddLine size={18} />
-          <span className="hidden lg:inline">New Lead</span>
-        </button>
+              <RiAddLine size={18} />
+              <span className="hidden lg:inline">New Lead</span>
+            </button>
           </div>
         </div>
       </div>
@@ -145,51 +148,72 @@ const LeadsCustomers = (tabs) => {
         </div>
       </div>
 
-        {/* Leads Data */}
-        <div className=" overflow-auto  h-70  [scrollbar-width:none] [&::-webkit-scrollbar]:hidden ">
-          <div className="lg:w-full flex lg:justify-between items-center lg:px-4 py-2 lg:gap-0  px-2 gap-11 ">
-            <h1 className="whitespace-nowrap lg:text-m text-[10px] lg:text-base">ID</h1>
-            <h1 className="whitespace-nowrap lg:text-m text-[10px] lg:text-base relative lg:right-4 right-2">
-              Name & Company
-            </h1>
-            <h1 className="whitespace-nowrap lg:text-m text-[10px] lg:text-base relative right-7 ">SOURCE</h1>
-            <h1 className="whitespace-nowrap lg:text-m text-[10px] lg:text-base relative right-6  ">STATUS</h1>
-            <h1 className="whitespace-nowrap lg:text-m text-[10px] lg:text-base relative right-2">
-              ASSIGNED TO
-            </h1>
-            <h1 className="whitespace-nowrap lg:text-m text-[10px] lg:text-base lg:mr-4 relative right-4 ">ACTION</h1>
-          </div>
-          <LeadComponents/>
-          <LeadComponents/>
-          <LeadComponents/>
-          <LeadComponents/>
-          <LeadComponents/>
-          <LeadComponents/>
-          <LeadComponents/>
-          <LeadComponents/>
-          <LeadComponents/>
-          <LeadComponents/>
-          <LeadComponents/>
-          <LeadComponents/>
-          <LeadComponents/>
-          <LeadComponents/>
-          <LeadComponents/>
-          <LeadComponents/>
-          <LeadComponents/>
-          <LeadComponents/>
-          <LeadComponents/>
-          <LeadComponents/>
-          <LeadComponents/>
-          <LeadComponents/>
-          <LeadComponents/>
-          <LeadComponents/>
-          <LeadComponents/>
-          <LeadComponents/>
-          <LeadComponents/>
-          <LeadComponents/>
-          <LeadComponents/>
-          <LeadComponents/>
+      {/* Leads Data */}
+      <div className="h-70 overflow-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        <div
+          className="
+      grid min-w-[720px]
+      grid-cols-[70px_1.6fr_120px_140px_1.5fr_100px]
+      items-center gap-3
+      px-3 py-2
+      lg:min-w-0
+      lg:grid-cols-[80px_1.7fr_130px_150px_1.7fr_110px]
+      lg:px-4
+    "
+        >
+          {/* ID */}
+          <h1 className="whitespace-nowrap text-[10px] lg:text-base">ID</h1>
+
+          {/* Name & Company */}
+          <h1 className="whitespace-nowrap text-[10px] lg:text-base">
+            Name & Company
+          </h1>
+
+          {/* Source */}
+          <h1 className="whitespace-nowrap text-[10px] lg:text-base">SOURCE</h1>
+
+          {/* Status */}
+          <h1 className="whitespace-nowrap relative left-8 text-[10px] lg:text-base">STATUS</h1>
+
+          {/* Assigned To */}
+          <h1 className="whitespace-nowrap relative left-5 text-[10px] lg:text-base">
+            ASSIGNED TO
+          </h1>
+
+          {/* Action */}
+          <h1 className="whitespace-nowrap relative left-5 text-[10px] lg:text-base">ACTION</h1>
         </div>
+        <LeadComponents />
+        <LeadComponents />
+        <LeadComponents />
+        <LeadComponents />
+        <LeadComponents />
+        <LeadComponents />
+        <LeadComponents />
+        <LeadComponents />
+        <LeadComponents />
+        <LeadComponents />
+        <LeadComponents />
+        <LeadComponents />
+        <LeadComponents />
+        <LeadComponents />
+        <LeadComponents />
+        <LeadComponents />
+        <LeadComponents />
+        <LeadComponents />
+        <LeadComponents />
+        <LeadComponents />
+        <LeadComponents />
+        <LeadComponents />
+        <LeadComponents />
+        <LeadComponents />
+        <LeadComponents />
+        <LeadComponents />
+        <LeadComponents />
+        <LeadComponents />
+        <LeadComponents />
+        <LeadComponents />
+      </div>
     </div>
   );
 };

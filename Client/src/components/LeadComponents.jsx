@@ -1,57 +1,101 @@
 import React from "react";
 import {
-  RiArrowRightSLine,
-  RiSearchLine,
-  RiRefreshLine,
   RiGlobalLine,
-  RiCircleFill,
   RiEyeLine,
   RiPencilLine,
-  RiMore2Line
+  RiMore2Line,
 } from "@remixicon/react";
 
 const LeadComponents = () => {
   return (
-    <div className="w-full flex gap-4 items-center justify-between  h-20 lg:px-4 px-2 ">
-      <h1 className="text-primary lg:text-sm text-[10px]">4525</h1>
-      <div className="flex items-center gap-2">
+    <div className="grid w-full min-w-[720px] grid-cols-[70px_1.6fr_120px_140px_1.5fr_100px] items-center gap-3 px-3 py-3 lg:min-w-0 lg:grid-cols-[80px_1.7fr_130px_150px_1.7fr_110px] lg:px-4">
+      
+      {/* Lead ID */}
+      <div className="min-w-0">
+        <p className="truncate text-[10px] text-primary lg:text-sm">
+          4525
+        </p>
+      </div>
+
+      {/* Name & Company */}
+      <div className="flex min-w-0 items-center gap-2">
         <img
-          className="h-7 w-7 lg:h-10 lg:w-10  rounded-full"
+          className="h-7 w-7 shrink-0 rounded-full lg:h-10 lg:w-10"
           src="https://i.pinimg.com/736x/8a/cc/32/8acc3259cd26b57b557e756306373618.jpg"
-          alt="logo"
+          alt="Ritu Raj"
         />
-        <div className="">
-          <h1 className="lg:text-xl text-[10px]">Ritu Raj</h1>
-          <p className="lg:text-sm text-[9px] opacity-60 ">Detoxy Privet Limited</p>
+
+        <div className="min-w-0">
+          <h1 className="truncate text-[10px] lg:text-xl">
+            Ritu Raj
+          </h1>
+
+          <p className="truncate text-[9px] opacity-60 lg:text-sm">
+            Detoxy Privet Limited
+          </p>
         </div>
       </div>
-      <h1 className="flex gap-1  ml-10 text-[10px] lg:text-sm px-2 lg:px-4 py-2  shadow shadow-outline rounded-4xl items-center  ">
-        <RiGlobalLine className="text-primary " size={14} />
-        Website
-      </h1>
-      <h1 className=" bg-primary text-[10px] lg:text-sm flex gap-1 text-background lg:px-4 py-2 px-2  shadow shadow-outline rounded-4xl items-center">
-        {" "}
-        Demo <span>Scheduled</span>
-      </h1>
-      <div className="flex  items-center gap-2">
+
+      {/* Source */}
+      <div className="min-w-0">
+        <span className="flex w-fit items-center gap-1 whitespace-nowrap rounded-4xl px-2 py-2 text-[10px] shadow shadow-outline lg:px-4 lg:text-sm">
+          <RiGlobalLine
+            className="shrink-0 text-primary"
+            size={14}
+          />
+          Website
+        </span>
+      </div>
+
+      {/* Status */}
+      <div className="min-w-0">
+        <span className="flex w-fit items-center gap-1 whitespace-nowrap rounded-4xl bg-primary px-2 py-2 text-[10px] text-background shadow shadow-outline lg:px-4 lg:text-sm">
+          Demo <span>Scheduled</span>
+        </span>
+      </div>
+
+      {/* Assigned To */}
+      <div className="flex min-w-0 items-center gap-2">
         <img
-          className="h-7 w-7 lg:h-10 lg:w-10 rounded-full"
+          className="h-7 w-7 shrink-0 rounded-full lg:h-10 lg:w-10"
           src="https://i.pinimg.com/736x/46/e7/72/46e7724771f4dcbb20f6472a5c7a0b9f.jpg"
-          alt="assignedToLOGO"
-        /> 
-        <div className="">
-          <h1 className="lg:text-xl text-sm">Sumira Mahto</h1>
-          <p className="lg:text-sm text-[9px] overflow-hidden opacity-60 ">mahtosumira12@gmail.com</p>
+          alt="Sumira Mahto"
+        />
+
+        <div className="min-w-0">
+          <h1 className="truncate text-[10px] lg:text-xl">
+            Sumira Mahto
+          </h1>
+
+          <p className="truncate text-[9px] opacity-60 lg:text-sm">
+            mahtosumira12@gmail.com
+          </p>
         </div>
       </div>
-      <div className=" lg:gap-4 gap-1 px-2 flex">
-        <button>
+
+      {/* Actions */}
+      <div className="flex items-center justify-end gap-1 lg:gap-3">
+        <button
+          type="button"
+          className="rounded-full p-1.5 hover:bg-surface-variant"
+          aria-label="View lead"
+        >
           <RiEyeLine size={18} />
         </button>
-        <button>
+
+        <button
+          type="button"
+          className="rounded-full p-1.5 hover:bg-surface-variant"
+          aria-label="Edit lead"
+        >
           <RiPencilLine size={18} />
         </button>
-        <button>
+
+        <button
+          type="button"
+          className="rounded-full p-1.5 hover:bg-surface-variant"
+          aria-label="More actions"
+        >
           <RiMore2Line size={18} />
         </button>
       </div>

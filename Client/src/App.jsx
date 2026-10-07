@@ -2,12 +2,18 @@ import { useEffect, useState } from 'react'
 import AppRoutes from './routes/AppRoutes.jsx'
 import { useAuth } from './hooks/useAuth.js';
 import Sidebar from './components/Sidebar.jsx';
-
+import { useLead } from './hooks/uselead.js';
 
 const App = () => {
-  const {checkAuth} = useAuth()
+    const {checklead}= useLead()
+    const {checkAuth} = useAuth()
+    
   useEffect(() => {
    checkAuth();
+}, []);
+
+  useEffect(() => {
+   checklead();
 }, []);
 
   return (
@@ -17,5 +23,4 @@ const App = () => {
    </div>
   )
 }
-
 export default App

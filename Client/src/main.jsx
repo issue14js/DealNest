@@ -5,13 +5,16 @@ import "remixicon/fonts/remixicon.css";
 import './index.css'
 import App from './App.jsx'
 import { AuthProvider } from './context/authcontext.jsx'
+import { LeadProvider } from './context/leadContext.jsx';
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <BrowserRouter>
+    <LeadProvider>
     <AuthProvider>
+    <BrowserRouter>
     <App />
-    </AuthProvider>
     </BrowserRouter>
+    </AuthProvider>
+    </LeadProvider>
   </StrictMode>,
 )
