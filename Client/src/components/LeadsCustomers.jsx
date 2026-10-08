@@ -17,7 +17,7 @@ import LeadComponents from "./leadComponents";
 
 
 const LeadsCustomers = (tabs) => {
-  const lead=useLead()
+  const {lead,setcreatelead,createlead}=useLead()
   const navigate = useNavigate();
   const [filter, setfilter] = useState("All_Leads");
 console.log(lead)
@@ -33,6 +33,10 @@ console.log(lead)
   const ClickArchived = () => {
     setfilter("Archived");
   };
+  const createLead = ()=>{
+    console.log("click")
+    setcreatelead(!createlead)
+  }
   return (
     <div className={` w-[80%]  `}>
       {/* Header */}
@@ -59,7 +63,7 @@ console.log(lead)
             </span>
           </div>
           <div className="flex items-end justify-end h-20 w-1/2">
-            <button className="flex cursor-pointer rounded-4xl px-3 sm:px-4 py-2 shadow-outline shadow  items-center gap-1 bg-primary-container text-surface-bright">
+            <button onClick={createLead} className="flex cursor-pointer rounded-4xl px-3 sm:px-4 py-2 shadow-outline shadow  items-center gap-1 bg-primary-container text-surface-bright">
               <RiAddLine size={18} />
               <span className="hidden lg:inline">New Lead</span>
             </button>

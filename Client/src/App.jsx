@@ -3,11 +3,14 @@ import AppRoutes from './routes/AppRoutes.jsx'
 import { useAuth } from './hooks/useAuth.js';
 import Sidebar from './components/Sidebar.jsx';
 import { useLead } from './hooks/uselead.js';
+import CreateLead from './components/CreateLead.jsx';
+
 
 const App = () => {
-    const {checklead}= useLead()
+    const {checklead,createlead}= useLead()
     const {checkAuth} = useAuth()
     
+  
   useEffect(() => {
    checkAuth();
 }, []);
@@ -19,6 +22,7 @@ const App = () => {
   return (
    <div className="flex justify-center items-center h-screen w-full">
     <AppRoutes/>
+    {createlead?<CreateLead/>:""}
    
    </div>
   )

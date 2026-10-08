@@ -28,4 +28,4 @@ app.get("/", (req, res) => {
 app.use("/api/auth", authRoute);
 app.use("/api/lead",leadRoute)
 
-export default app; 
+export default app;
