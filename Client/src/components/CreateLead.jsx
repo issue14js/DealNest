@@ -9,6 +9,8 @@ import {
   RiAddLine,
 } from "@remixicon/react";
 import { useLead } from "../hooks/uselead";
+import { Navigate, useNavigate } from "react-router-dom";
+
 
 const CreateLead = () => {
   const {createlead,setcreatelead,create,checklead} = useLead()
@@ -17,7 +19,7 @@ const CreateLead = () => {
     email: "",
     number: "",
     company: "",
-    source: "",
+    source: "Website",
   });
 
   const handleChange = (e) => {
@@ -32,7 +34,6 @@ const CreateLead = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     setcreatelead(!createlead)
-    console.log("Lead Data:", formData);
     create(formData)
   };
 

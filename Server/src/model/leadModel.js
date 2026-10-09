@@ -6,6 +6,10 @@ const leadSchema = new mongoose.Schema(
       type: String,
       unique: true,
     },
+    avatar:{
+      type:String,
+      default: "/uploads/default-avatar.jpg"
+    },
     name: {
       type: String,
       required: true,
@@ -48,7 +52,7 @@ const leadSchema = new mongoose.Schema(
     assignedTo: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
-      default: null,
+      default: "NO Assigned",
     },
 
     createdBy: {

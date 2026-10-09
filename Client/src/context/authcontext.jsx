@@ -29,7 +29,7 @@ export function AuthProvider({ children }) {
         formData,
         { withCredentials: true },
       );
-      console.log(response.data);
+
       setUser(response.data.user);
       return;
     } catch (err) {
@@ -64,7 +64,6 @@ export function AuthProvider({ children }) {
         formData,
         { withCredentials: true },
       );
-      console.log(resposne);
       setUser(resposne.data.user);
     } catch (err) {
       console.log(err);
@@ -93,7 +92,6 @@ export function AuthProvider({ children }) {
   const changePassword = async (data) =>{
     try{
       const response = await axios.patch(`${rootUrl}/api/auth/updatepassword`,data,{withCredentials:true})
-      console.log(response)
       }catch(err){
       console.log(err)
     }

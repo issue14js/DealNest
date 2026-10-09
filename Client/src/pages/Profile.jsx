@@ -21,7 +21,7 @@ const Profile = () => {
     currentpassword: "",
     newpassword: "",
   });
-  // console.log(user);
+
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -35,7 +35,6 @@ const Profile = () => {
   const dpChange = (event) => {
     const file = event.target.files[0];
     if (!file) return;
-    console.log(file);
     changeDp(file);
   };
   const handleChangepass = (event) => {
@@ -50,7 +49,6 @@ const Profile = () => {
     event.preventDefault();
     setchangepassdropdown((prev) => !prev);
     changePassword(passwordform);
-    console.log(passwordform);
   };
   const handelLogout = () => {
     logout();

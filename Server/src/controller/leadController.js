@@ -3,6 +3,7 @@ import leadModel from "../model/leadModel.js";
 
 async function createlead(req, res) {
   try {
+    console.log("route controller tak aa raha ", req.body);
     const { name, email, number, company, source } = req.body;
     const count = await leadModel.countDocuments();
     const leadId = `${String(count + 1).padStart(4, "0")}`;
@@ -13,8 +14,12 @@ async function createlead(req, res) {
       number,
       company,
       source,
+
       createdBy: req.user._id,
     });
+    const leads = await leadModel
+      .find()
+      .populate("createdBy", "name email");
     return res.status(200).json({
       message: "Lead Created Sucsessfully",
       lead,
@@ -35,8 +40,8 @@ async function getleads(req, res) {
     if (req.user.role === "salesAgent") {
       leads = await leadModel
         .find({ assignedTo: req.user._id })
-        .populate("createdBy", "name email")
-        .populate("assignedTo", "name email");
+        .populate("createdBy", "name email avatar")
+        .populate("assignedTo", "name email avatar")
     }
 
     if (req.user.role === "manager") {
@@ -49,15 +54,15 @@ async function getleads(req, res) {
 
       leads = await leadModel
         .find({ assignedTo: { $in: teamIds } })
-        .populate("assignedTo", "name email")
-        .populate("createdBy", "name email");
+        .populate("assignedTo", "name email avatar")
+        .populate("createdBy", "name email avatar")
     }
 
     if (req.user.role === "admin") {
       leads = await leadModel
         .find()
-        .populate("createdBy", "name email")
-        .populate("assignedTo", "name email");
+        .populate("createdBy", "name email avatar")
+        .populate("assignedTo", "name email avatar")
     }
 
     return res.status(200).json({
@@ -107,4 +112,4 @@ async function getlead(req, res) {
     });
   }
 }
-export { createlead, getleads,getlead };
+export { createlead, getleads, getlead };

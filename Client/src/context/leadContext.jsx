@@ -22,7 +22,6 @@ export function LeadProvider({ children }) {
   };
   const create = async (formData) => {
     try {
-        console.log("route gaya")
       const response = await axios.post(
         `${rootUrl}/api/lead/create`,
         formData,
@@ -40,7 +39,7 @@ export function LeadProvider({ children }) {
   };
   return (
     <LeadContext.Provider
-      value={{ checklead,create, lead, createlead, setcreatelead }}
+      value={{ checklead,create, lead, createlead, setcreatelead,rootUrl }}
     >
       {children}
     </LeadContext.Provider>
