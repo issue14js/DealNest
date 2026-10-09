@@ -11,13 +11,10 @@ const App = () => {
     const {checkAuth} = useAuth()
     
   
-  useEffect(() => {
-   checkAuth();
-}, []);
 
-  useEffect(() => {
-   checklead();
-}, []);
+
+
+
 
   return (
    <div className="flex justify-center items-center h-screen w-full">

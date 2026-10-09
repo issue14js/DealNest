@@ -53,7 +53,7 @@ const Sidebar = ({setTabs}) => {
     setTabs("AdminRBACSettings")
   };
   return (
-    <div className=" lg:h-142 h-180  relative gap-2 flex flex-col shadow-[0_4px_6px_-2px] shadow-outline py-4 px-3 w-[20%]">
+    <div className=" lg:h-142 h-180  relative gap-2 flex flex-col shadow shadow-primary py-4 px-3 w-[20%]">
       <div
         onClick={handelDashboard}
         className={`cursor-pointer rounded-xl items-center flex px-4 w-full bg-background h-10  ${click === "Dashboard" ? "shadow-[inset_0_0_15px_rgba(0,0,0,0.15)] text-primary font-semibold" : ""} `}

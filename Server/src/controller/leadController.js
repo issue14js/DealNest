@@ -3,7 +3,6 @@ import leadModel from "../model/leadModel.js";
 
 async function createlead(req, res) {
   try {
-    console.log("route controller tak aa raha ", req.body);
     const { name, email, number, company, source } = req.body;
     const count = await leadModel.countDocuments();
     const leadId = `${String(count + 1).padStart(4, "0")}`;

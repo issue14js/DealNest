@@ -9,12 +9,12 @@ import { LeadProvider } from './context/leadContext.jsx';
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <LeadProvider>
     <AuthProvider>
+    <LeadProvider>
     <BrowserRouter>
     <App />
     </BrowserRouter>
-    </AuthProvider>
     </LeadProvider>
+    </AuthProvider>
   </StrictMode>,
 )

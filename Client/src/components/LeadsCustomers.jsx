@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useLead } from "../hooks/uselead";
 import {
   RiArrowRightSLine,
@@ -16,14 +16,24 @@ import { Link } from "react-router-dom";
 
 const LeadsCustomers = (tabs) => {
   const navigate = useNavigate();
-  const { lead, setcreatelead, createlead } = useLead();
+  const { lead, loading, setcreatelead, createlead, checklead } = useLead();
   const { rootUrl } = useLead();
-
   const [search, setsearch] = useState("");
   const [statusFilter, setstatusFilter] = useState("");
   const [sourceFilter, setsourceFilter] = useState("");
   const [assignedFilter, setAssignedFilter] = useState("");
   const [filter, setfilter] = useState("All_Leads");
+  const [rotating, setRotating] = useState(false);
+
+  const handleRefresh = async () => {
+    setRotating(true);
+
+    try {
+      await checklead();
+    } finally {
+      setRotating(false);
+    }
+  };
 
   const ClickAllLeads = () => {
     setfilter("All_Leads");
@@ -109,7 +119,11 @@ const LeadsCustomers = (tabs) => {
               and round-robin allocation.
             </span>
           </div>
-          <div className="flex items-end justify-end h-20 w-1/2">
+          <div className="flex flex-col gap-2 items-end justify h-20 w-1/2">
+          <div className="flex gap-2">
+          <button className="text-primary px-4 py-2 shadow shadow-primary rounded-4xl">Import CSV / Excel</button>
+          <button className="text-primary px-4 py-2 shadow shadow-primary rounded-4xl">Export Data</button>
+          </div>
             <button
               onClick={createLead}
               className="flex cursor-pointer rounded-4xl px-3 sm:px-4 py-2 shadow-outline shadow  items-center gap-1 bg-primary-container text-surface-bright"
@@ -122,20 +136,20 @@ const LeadsCustomers = (tabs) => {
       </div>
 
       {/* Tabs */}
-      <div className=" py-2 rounded overflow-x-auto  flex justify-around [scrollbar-width:none] [&::-webkit-scrollbar]:hidden  w-full shadow-[inset_0_0_4px_rgba(0,0,0,0.08)] shadow-outline ">
+      <div className=" py-2 px-4 W-50 rounded overflow-x-auto  flex  ">
         <button
           onClick={ClickAllLeads}
-          className={` cursor-pointer ${filter == "All_Leads" ? " shadow shadow-on-surface-variant" : ""} outline-none rounded px-4 py-2  `}
+          className={` cursor-pointer ${filter == "All_Leads" ? " bg-primary text-background shadow shadow-on-surface-variant" : ""} outline-none rounded px-4 py-2  `}
         >
-          All Leads <span>99</span>{" "}
+          All Leads <span></span>{" "}
         </button>
         <button
           onClick={ClickAssignedToMe}
-          className={` cursor-pointer  outline-none rounded px-4 py-2 ${filter == "AssignedToMe" ? " shadow shadow-on-surface-variant" : ""} `}
+          className={` cursor-pointer  outline-none rounded px-4 py-2 ${filter == "AssignedToMe" ? " bg-primary text-background shadow shadow-on-surface-variant" : ""} `}
         >
-          Assigned to Me <span>99</span>{" "}
+          Assigned to Me <span></span>{" "}
         </button>
-        <button
+        {/* <button
           onClick={ClickConvertedCustomers}
           className={` cursor-pointeroutline-none rounded px-4 py-2 ${filter == "ConvertedCustomers" ? " shadow shadow-on-surface-variant" : ""} `}
         >
@@ -146,7 +160,7 @@ const LeadsCustomers = (tabs) => {
           className={` cursor-pointer outline-none rounded px-4 py-2 ${filter == "Archived" ? " shadow shadow-on-surface-variant" : ""} `}
         >
           Archived <span>99</span>{" "}
-        </button>
+        </button> */}
       </div>
 
       {/* Search and filter */}
@@ -223,14 +237,20 @@ const LeadsCustomers = (tabs) => {
             </select>
           </div>
 
-          <button className="shrink-0 rounded-full p-2">
-            <RiRefreshLine />
+          {/* Refrase */}
+          <button
+            onClick={handleRefresh}
+            disabled={loading}
+            className="shrink-0 rounded-full p-2"
+          >
+            <RiRefreshLine className={rotating ? "animate-spin" : ""} size={22} />
           </button>
         </div>
       </div>
 
       {/* Leads Data */}
       <div className="h-70 overflow-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        {/* Header */}
         <div
           className="
       grid min-w-[720px]
@@ -270,6 +290,7 @@ const LeadsCustomers = (tabs) => {
             ACTION
           </h1>
         </div>
+
         {filteredLeads.map((Data) => (
           <div
             key={Data._id}
@@ -331,7 +352,7 @@ const LeadsCustomers = (tabs) => {
                 </h1>
 
                 <p className="truncate text-[9px] opacity-60 lg:text-sm">
-                  {Data.assignedTo.company}
+                  {Data.assignedTo.email}
                 </p>
               </div>
             </div>
@@ -340,26 +361,26 @@ const LeadsCustomers = (tabs) => {
             <div className="flex items-center justify-end gap-1 lg:gap-3">
               <button
                 type="button"
-                className="rounded-full p-1.5 hover:bg-surface-variant"
+                className="rounded-full shadow shadow-outline p-1.5 hover:bg-surface-variant"
                 aria-label="View lead"
               >
-                <RiEyeLine size={18} />
+                <RiEyeLine className="  text-primary " size={18} />
               </button>
 
               <button
                 type="button"
-                className="rounded-full p-1.5 hover:bg-surface-variant"
+                className="rounded-full shadow shadow-outline p-1.5 hover:bg-surface-variant"
                 aria-label="Edit lead"
               >
-                <RiPencilLine size={18} />
+                <RiPencilLine className="  text-primary " size={18} />
               </button>
 
               <button
                 type="button"
-                className="rounded-full p-1.5 hover:bg-surface-variant"
+                className="rounded-full shadow shadow-outline p-1.5 hover:bg-surface-variant"
                 aria-label="More actions"
               >
-                <RiMore2Line size={18} />
+                <RiMore2Line className="  text-primary " size={18} />
               </button>
             </div>
           </div>

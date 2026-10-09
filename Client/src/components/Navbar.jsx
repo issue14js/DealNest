@@ -17,18 +17,23 @@ const Navbar = () => {
   const [Dropwown, setDropwown] = useState(false)
 
   return (
-    <div className="h-20  w-full flex items-center justify-between gap-3 py-2 px-3 sm:px-4 bg-background shadow  ">
+    <div className="h-20  w-full flex items-center justify-between gap-3 py-2 px-3 sm:px-2 bg-background shadow  ">
 
       {/* Left Section */}
       <div className="flex gap-2 lg:gap-4 items-center min-w-0 flex-1">
-
-        {/* Logo */}
+        <div className="shadow shadow-primary gap-2 flex items-center px-2 h-15 w-65 rounded">
+         {/* Logo */}
         <img
           onClick={()=>{navigate('/')}}
           className="h-9 w-9   object-center object-cover cursor-pointer lg:h-10 lg:w-10  shrink-0"
           src="/icons.svg"
           alt="App_logo"
         />
+        <h1 className=""> <h1 className="text-primary font-bold">DealNest CRM</h1> <h1 className="text-sm opacity-80 font-semibold">Enterprise Suite</h1> </h1>
+       
+        </div>
+
+   
 
         {/* Search */}
         <div className="shadow-outline shadow border-outline-variant items-center px-3 sm:px-4 gap-2 flex h-10 sm:h-11 rounded-4xl outline-none overflow-hidden bg-surface-container-high w-full max-w-[460px]">
