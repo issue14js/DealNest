@@ -13,10 +13,12 @@ import {
 } from "@remixicon/react";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
+import { useAuth } from "../hooks/useAuth";
 
 const LeadsCustomers = (tabs) => {
   const navigate = useNavigate();
   const { lead, loading, setcreatelead, createlead, checklead } = useLead();
+  const {user} = useAuth()
   const { rootUrl } = useLead();
   const [search, setsearch] = useState("");
   const [statusFilter, setstatusFilter] = useState("");
@@ -43,14 +45,6 @@ const LeadsCustomers = (tabs) => {
     setfilter("AssignedToMe");
   };
 
-  const ClickConvertedCustomers = () => {
-    setfilter("ConvertedCustomers");
-  };
-
-  const ClickArchived = () => {
-    setfilter("Archived");
-  };
-
   const createLead = () => {
     setcreatelead(!createlead);
   };
@@ -68,31 +62,43 @@ const LeadsCustomers = (tabs) => {
         ]),
     ).values(),
   ];
-  const filteredLeads = lead.filter((item) => {
-    const query = search.toLowerCase().trim();
+  // 1. Main tab filter
+const tabFilteredLeads =
+  filter === "All_Leads"
+    ? lead
+    : lead.filter((item) => item.assignedTo?._id === user?._id);
 
-    const matchesSearch =
-      item.name?.toLowerCase().includes(query) ||
-      item.email?.toLowerCase().includes(query) ||
-      item.number?.toString().includes(query) ||
-      item.company?.toLowerCase().includes(query);
+// 2. Dropdown and search filters
+const filteredLeads = tabFilteredLeads.filter((item) => {
+  const query = search.toLowerCase().trim();
 
-    const matchesStatus =
-      !statusFilter ||
-      item.status?.toLowerCase() === statusFilter.toLowerCase();
+  const matchesSearch =
+    item.name?.toLowerCase().includes(query) ||
+    item.email?.toLowerCase().includes(query) ||
+    item.number?.toString().includes(query) ||
+    item.company?.toLowerCase().includes(query);
 
-    const matchesSource =
-      !sourceFilter ||
-      item.source?.toLowerCase() === sourceFilter.toLowerCase();
+  const matchesStatus =
+    !statusFilter ||
+    item.status?.toLowerCase() === statusFilter.toLowerCase();
 
-    const matchesAssigned =
-      !assignedFilter ||
-      (assignedFilter === "unassigned"
-        ? !item.assignedTo
-        : item.assignedTo?._id === assignedFilter);
+  const matchesSource =
+    !sourceFilter ||
+    item.source?.toLowerCase() === sourceFilter.toLowerCase();
 
-    return matchesSearch && matchesStatus && matchesSource && matchesAssigned;
-  });
+  const matchesAssigned =
+    !assignedFilter ||
+    (assignedFilter === "unassigned"
+      ? !item.assignedTo
+      : item.assignedTo?._id === assignedFilter);
+
+  return (
+    matchesSearch &&
+    matchesStatus &&
+    matchesSource &&
+    matchesAssigned
+  );
+});
 
   return (
     <div className={` w-[80%]  `}>
@@ -119,17 +125,17 @@ const LeadsCustomers = (tabs) => {
               and round-robin allocation.
             </span>
           </div>
-          <div className="flex flex-col gap-2 items-end justify h-20 w-1/2">
-          <div className="flex gap-2">
-          <button className="text-primary px-4 py-2 shadow shadow-primary rounded-4xl">Import CSV / Excel</button>
-          <button className="text-primary px-4 py-2 shadow shadow-primary rounded-4xl">Export Data</button>
+          <div className="flex flex-col lg:gap-2 ml-4 items-end justify h-20 w-1/2">
+          <div className="lg:flex lg:flex-row flex-col gap-2">
+          <button className="text-primary  mb-2 px-4 py-2 shadow shadow-primary lg:text-xl text-[10px] rounded-4xl">Import CSV / Excel</button>
+          <button className="text-primary  mb-2 px-4 py-2 shadow shadow-primary lg:text-xl text-[10px] rounded-4xl">Export Data</button>
           </div>
-            <button
+             <button
               onClick={createLead}
               className="flex cursor-pointer rounded-4xl px-3 sm:px-4 py-2 shadow-outline shadow  items-center gap-1 bg-primary-container text-surface-bright"
             >
               <RiAddLine size={18} />
-              <span className="hidden lg:inline">New Lead</span>
+              <span className=" lg:inline">Create</span>
             </button>
           </div>
         </div>
@@ -149,18 +155,6 @@ const LeadsCustomers = (tabs) => {
         >
           Assigned to Me <span></span>{" "}
         </button>
-        {/* <button
-          onClick={ClickConvertedCustomers}
-          className={` cursor-pointeroutline-none rounded px-4 py-2 ${filter == "ConvertedCustomers" ? " shadow shadow-on-surface-variant" : ""} `}
-        >
-          Converted Customers <span>99</span>{" "}
-        </button>
-        <button
-          onClick={ClickArchived}
-          className={` cursor-pointer outline-none rounded px-4 py-2 ${filter == "Archived" ? " shadow shadow-on-surface-variant" : ""} `}
-        >
-          Archived <span>99</span>{" "}
-        </button> */}
       </div>
 
       {/* Search and filter */}

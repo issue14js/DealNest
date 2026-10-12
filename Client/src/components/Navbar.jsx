@@ -21,7 +21,7 @@ const Navbar = () => {
 
       {/* Left Section */}
       <div className="flex gap-2 lg:gap-4 items-center min-w-0 flex-1">
-        <div className="shadow shadow-primary gap-2 flex items-center px-2 h-15 w-65 rounded">
+        <div className="lg:shadow lg:shadow-primary gap-2 flex items-center px-2 lg:h-15 lg:w-65 rounded">
          {/* Logo */}
         <img
           onClick={()=>{navigate('/')}}
@@ -29,7 +29,7 @@ const Navbar = () => {
           src="/icons.svg"
           alt="App_logo"
         />
-        <h1 className=""> <h1 className="text-primary font-bold">DealNest CRM</h1> <h1 className="text-sm opacity-80 font-semibold">Enterprise Suite</h1> </h1>
+        <div className="lg:block hidden  "><h1 className="text-primary  font-bold">DealNest CRM</h1> <h1 className="text-sm opacity-80 font-semibold">Enterprise Suite</h1> </div>
        
         </div>
 
