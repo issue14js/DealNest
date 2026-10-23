@@ -284,7 +284,7 @@ const filteredLeads = tabFilteredLeads.filter((item) => {
             ACTION
           </h1>
         </div>
-        <div className=" lg:h-53 h-77 overflow-auto ">
+        <div className=" lg:h-62 h-77 overflow-auto ">
 
         {filteredLeads.map((Data) => (
           <div
