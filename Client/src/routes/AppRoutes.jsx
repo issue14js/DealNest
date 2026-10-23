@@ -6,6 +6,7 @@ import ProtectedRoute from "../components/ProtectedRoute";
 import Layout from "../pages/Layout.jsx";
 import Profile from "../pages/Profile.jsx";
 import LeadsCustomers from "../components/LeadsCustomers.jsx";
+import LeadId from "../components/leadId.jsx";
 
 const AppRoutes = () => {
   return (
@@ -16,6 +17,7 @@ const AppRoutes = () => {
       <Route element={<ProtectedRoute />}>
         <Route path="/" element={<Layout />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/leads/:id" element={<LeadId />} />
       </Route>
     </Routes>
   );

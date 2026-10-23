@@ -8,7 +8,7 @@ const Dashboard = () => {
     const {user} = useAuth()
     const [tabs, setTabs] = useState("Dashboard")
   return (
-    <div className="h-screen w-full">
+    <div className="h-screen overflow-hidden w-full">
       <Navbar/>
       <div className=" flex h-180 lg:h-142 w-full">
       <Sidebar setTabs = {setTabs}/>

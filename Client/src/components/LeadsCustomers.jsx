@@ -101,9 +101,9 @@ const filteredLeads = tabFilteredLeads.filter((item) => {
 });
 
   return (
-    <div className={` w-[80%]  `}>
+    <div className={` w-[80%] lg:px-4 `}>
       {/* Header */}
-      <div className="shadow shadow-outline-variant flex flex-col justify-center p-4  w-full">
+      <div className=" flex flex-col justify-center p-4  w-full">
         <span className="flex py-2 items-center text-sm">
           {" "}
           <p
@@ -126,7 +126,7 @@ const filteredLeads = tabFilteredLeads.filter((item) => {
             </span>
           </div>
           <div className="flex flex-col lg:gap-2 ml-4 items-end justify h-20 w-1/2">
-          <div className="lg:flex lg:flex-row flex-col gap-2">
+          <div className="lg:flex  lg:flex-row flex-col gap-2">
           <button className="text-primary  mb-2 px-4 py-2 shadow shadow-primary lg:text-xl text-[10px] rounded-4xl">Import CSV / Excel</button>
           <button className="text-primary  mb-2 px-4 py-2 shadow shadow-primary lg:text-xl text-[10px] rounded-4xl">Export Data</button>
           </div>
@@ -142,10 +142,10 @@ const filteredLeads = tabFilteredLeads.filter((item) => {
       </div>
 
       {/* Tabs */}
-      <div className=" py-2 px-4 W-50 rounded overflow-x-auto  flex  ">
+      <div className=" ">
         <button
           onClick={ClickAllLeads}
-          className={` cursor-pointer ${filter == "All_Leads" ? " bg-primary text-background shadow shadow-on-surface-variant" : ""} outline-none rounded px-4 py-2  `}
+          className={` cursor-pointer  ${filter == "All_Leads" ? " bg-primary text-background shadow shadow-on-surface-variant" : ""} outline-none rounded px-4 py-2  `}
         >
           All Leads <span></span>{" "}
         </button>
@@ -161,7 +161,7 @@ const filteredLeads = tabFilteredLeads.filter((item) => {
       <div className="overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
         <div className="className= flex w-full  lg:flex-wrap items-center gap-2 px-4 py-2">
           {/* SEARCH */}
-          <div className="flex h-10 w-30 shrink-0 items-center gap-2 overflow-hidden rounded-4xl border border-outline px-3 shadow-[inset_0_0_5px_rgba(0,0,0,0.08)]  sm:h-11 lg:w-105">
+          <div className="flex h-10 w-30 shrink-0 items-center gap-2 overflow-hidden rounded-4xl border border-outline px-3 shadow-[inset_0_0_5px_rgba(0,0,0,0.08)]  lg:h-11 lg:w-100">
             <RiSearchLine size={18} className="shrink-0" />
 
             <input
@@ -243,7 +243,7 @@ const filteredLeads = tabFilteredLeads.filter((item) => {
       </div>
 
       {/* Leads Data */}
-      <div className="h-70 overflow-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+      <div className="h-70  [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
         {/* Header */}
         <div
           className="
@@ -284,6 +284,7 @@ const filteredLeads = tabFilteredLeads.filter((item) => {
             ACTION
           </h1>
         </div>
+        <div className=" lg:h-53 h-77 overflow-auto ">
 
         {filteredLeads.map((Data) => (
           <div
@@ -302,7 +303,7 @@ const filteredLeads = tabFilteredLeads.filter((item) => {
               <img
                 className="h-7 w-7 shrink-0 rounded-full lg:h-15 lg:w-15"
                 src={`${rootUrl}${Data.avatar}`}
-                alt="Ritu Raj"
+                alt={Data.name}
               />
 
               <div className="min-w-0">
@@ -336,17 +337,21 @@ const filteredLeads = tabFilteredLeads.filter((item) => {
             <div className="flex min-w-0 items-center gap-2">
               <img
                 className="h-7 w-7 shrink-0 rounded-full lg:h-10 lg:w-10"
-                src={`${rootUrl}${Data.assignedTo.avatar}`}
-                alt="Sumira Mahto"
+                src={
+                  Data.assignedTo?.avatar
+                    ? `${rootUrl}${Data.assignedTo.avatar}`
+                    : undefined
+                }
+                alt={Data.assignedTo?.name || "Unassigned"}
               />
 
               <div className="min-w-0">
                 <h1 className="truncate text-[10px] lg:text-xl">
-                  {Data.assignedTo.name}
+                  {Data.assignedTo?.name || "Unassigned"}
                 </h1>
 
                 <p className="truncate text-[9px] opacity-60 lg:text-sm">
-                  {Data.assignedTo.email}
+                  {Data.assignedTo?.email || ""}
                 </p>
               </div>
             </div>
@@ -355,6 +360,7 @@ const filteredLeads = tabFilteredLeads.filter((item) => {
             <div className="flex items-center justify-end gap-1 lg:gap-3">
               <button
                 type="button"
+                onClick={() => navigate(`/leads/${Data.leadId}`)}
                 className="rounded-full shadow shadow-outline p-1.5 hover:bg-surface-variant"
                 aria-label="View lead"
               >
@@ -370,6 +376,7 @@ const filteredLeads = tabFilteredLeads.filter((item) => {
               </button>
 
               <button
+                onClick={() => navigate(`/leads/${Data.leadId}`)}
                 type="button"
                 className="rounded-full shadow shadow-outline p-1.5 hover:bg-surface-variant"
                 aria-label="More actions"
@@ -379,6 +386,7 @@ const filteredLeads = tabFilteredLeads.filter((item) => {
             </div>
           </div>
         ))}
+        </div>
       </div>
     </div>
   );

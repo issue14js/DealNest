@@ -1,5 +1,5 @@
 import axios from "axios";
-import { createContext, useEffect, useState } from "react"
+import { createContext, useCallback, useEffect, useState } from "react"
 import { useAuth } from "../hooks/useAuth";
 export const LeadContext = createContext();
 
@@ -49,9 +49,16 @@ export function LeadProvider({ children }) {
       console.log(err);
     }
   };
+
+  const featchlead = useCallback(async (id) => {
+    const response = await axios.get(`${rootUrl}/api/lead/${id}`, {
+      withCredentials: true,
+    });
+    return response.data.lead;
+  }, []);
   return (
     <LeadContext.Provider
-      value={{ checklead,create,loading, lead, createlead, setcreatelead,rootUrl }}
+      value={{ checklead,featchlead,create,loading, lead, createlead, setcreatelead,rootUrl }}
     >
       {children}
     </LeadContext.Provider>

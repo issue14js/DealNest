@@ -7,7 +7,7 @@ import roleMiddilware from "../middilware/roleMiddilware.js";
 const router = Router()
 
 router.get("/",authMiddilware,getleads);
-router.get('/:id',authMiddilware,getlead)
+router.get('/:id',authMiddilware,roleMiddilware("admin","manager","salesAgent"),getlead)
 router.post('/create',authMiddilware,roleMiddilware("admin","salesAgent") ,createlead)
 
 export default router 
