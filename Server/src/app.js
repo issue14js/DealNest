@@ -19,7 +19,7 @@ app.use(express.static(
 
 app.use(
   cors({
-    origin: "https://deal-nest-4eg9.vercel.app/",
+    origin: "https://deal-nest-4eg9.vercel.app",
     credentials: true,
   })
 );
