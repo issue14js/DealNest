@@ -1,5 +1,5 @@
 import axios from "axios";
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 
 export const AuthContext = createContext();
 
@@ -21,6 +21,9 @@ export function AuthProvider({ children }) {
       setLoading(false);
     }
   };
+  useEffect(() => {
+    checkAuth();
+  }, []);
 
   const register = async (formData) => {
     try {
@@ -46,17 +49,21 @@ export function AuthProvider({ children }) {
       return response.data;
     } catch (err) {
       console.log("login faild", err);
-      throw err;  
+      throw err;
     }
   };
-  const logout = async ()=>{
-    try{
-     const  resposne = await axios.post(`${rootUrl}/api/auth/logout`,{},{withCredentials:true})
-     setUser(null);
-    }catch(err){
-      console.log(err)
+  const logout = async () => {
+    try {
+      const resposne = await axios.post(
+        `${rootUrl}/api/auth/logout`,
+        {},
+        { withCredentials: true },
+      );
+      setUser(null);
+    } catch (err) {
+      console.log(err);
     }
-  }
+  };
   const updateProfile = async (formData) => {
     try {
       const resposne = await axios.put(
@@ -89,13 +96,17 @@ export function AuthProvider({ children }) {
       console.log(err);
     }
   };
-  const changePassword = async (data) =>{
-    try{
-      const response = await axios.patch(`${rootUrl}/api/auth/updatepassword`,data,{withCredentials:true})
-      }catch(err){
-      console.log(err)
+  const changePassword = async (data) => {
+    try {
+      const response = await axios.patch(
+        `${rootUrl}/api/auth/updatepassword`,
+        data,
+        { withCredentials: true },
+      );
+    } catch (err) {
+      console.log(err);
     }
-  }
+  };
   return (
     <AuthContext.Provider
       value={{
@@ -110,7 +121,7 @@ export function AuthProvider({ children }) {
         updateProfile,
         changeDp,
         rootUrl,
-        changePassword
+        changePassword,
       }}
     >
       {children}

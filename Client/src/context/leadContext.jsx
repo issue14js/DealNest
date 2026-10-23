@@ -1,5 +1,6 @@
 import axios from "axios";
-import { createContext, useState } from "react";
+import { createContext, useCallback, useEffect, useState } from "react"
+import { useAuth } from "../hooks/useAuth";
 export const LeadContext = createContext();
 
 export function LeadProvider({ children }) {
@@ -7,9 +8,11 @@ export function LeadProvider({ children }) {
   const [createlead, setcreatelead] = useState(false);
   const [loading, setLoading] = useState(true);
   const rootUrl = "http://localhost:3000";
+  const {user} = useAuth()
 
   const checklead = async () => {
     try {
+        setLoading(true);
       const response = await axios.get(`${rootUrl}/api/lead`, {
         withCredentials: true,
       });
@@ -20,6 +23,15 @@ export function LeadProvider({ children }) {
       setLoading(false);
     }
   };
+  useEffect(() => {
+  if (user) {
+    checklead();
+  } else {
+    setlead(null);
+    setLoading(false);
+  }
+}, [user]);
+
   const create = async (formData) => {
     try {
       const response = await axios.post(
@@ -37,9 +49,16 @@ export function LeadProvider({ children }) {
       console.log(err);
     }
   };
+
+  const featchlead = useCallback(async (id) => {
+    const response = await axios.get(`${rootUrl}/api/lead/${id}`, {
+      withCredentials: true,
+    });
+    return response.data.lead;
+  }, []);
   return (
     <LeadContext.Provider
-      value={{ checklead,create, lead, createlead, setcreatelead,rootUrl }}
+      value={{ checklead,featchlead,create,loading, lead, createlead, setcreatelead,rootUrl }}
     >
       {children}
     </LeadContext.Provider>

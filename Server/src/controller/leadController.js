@@ -1,9 +1,10 @@
 import userModel from "../model/authModel.js";
 import leadModel from "../model/leadModel.js";
+import dealModel from "../model/dealModel.js"
+
 
 async function createlead(req, res) {
   try {
-    console.log("route controller tak aa raha ", req.body);
     const { name, email, number, company, source } = req.body;
     const count = await leadModel.countDocuments();
     const leadId = `${String(count + 1).padStart(4, "0")}`;
@@ -81,10 +82,12 @@ async function getleads(req, res) {
 async function getlead(req, res) {
   try {
     const { id } = req.params;
+    console.log("aya")
+    console.log(id)
     const lead = await leadModel
       .findOne({ leadId: id })
       .populate("createdBy", "name email")
-      .populate("assignedTo", "nmae email");
+      .populate("assignedTo", "name email avatar");
 
     if (!lead) {
       return res.status(404).json({
@@ -111,5 +114,59 @@ async function getlead(req, res) {
       error: err.message,
     });
   }
+}
+async function updateLead(req,res){
+  try{
+    const data = req.body
+     const { id } = req.params;
+
+     const lead = await leadModel
+      .findOne({ leadId: id })
+      .populate("createdBy", "name email")
+      .populate("assignedTo", "nmae email");
+
+      if (!lead) {
+      return res.status(404).json({
+        message: "lead not found",
+      });
+    }
+
+    if (
+      req.user.role === "salesAgent" &&
+      lead.assignedTo?._id.toString() !== req.user._id.toString()
+    ) {
+      return res.status(403).json({
+        message: "You are not allowed to do changes in this lead",
+      });
+    }
+
+    lead.assignedTo = data
+    lead.save()
+
+    // Agar lead pehle se find kiya hua hai
+if (lead.status === "qualified") {
+  const deal = await dealModel.create({
+    title: lead.name,
+    company: lead.company,
+    lead: lead._id,
+  });
+
+  console.log("Deal created:", deal);
+}
+
+    return res.status(201).json({
+      message:"Status updated sucsessfully",
+      lead,
+      deal
+    })
+
+
+} catch (err) {
+  console.log(err.message); // pehle log karo
+  res.status(500).json({
+    message: "status changed failed",
+    err: err.message
+  });
+}
 }
 export { createlead, getleads, getlead };

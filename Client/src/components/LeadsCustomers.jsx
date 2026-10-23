@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useLead } from "../hooks/uselead";
 import {
   RiArrowRightSLine,
@@ -13,17 +13,29 @@ import {
 } from "@remixicon/react";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
+import { useAuth } from "../hooks/useAuth";
 
 const LeadsCustomers = (tabs) => {
   const navigate = useNavigate();
-  const { lead, setcreatelead, createlead } = useLead();
+  const { lead, loading, setcreatelead, createlead, checklead } = useLead();
+  const {user} = useAuth()
   const { rootUrl } = useLead();
-
   const [search, setsearch] = useState("");
   const [statusFilter, setstatusFilter] = useState("");
   const [sourceFilter, setsourceFilter] = useState("");
   const [assignedFilter, setAssignedFilter] = useState("");
   const [filter, setfilter] = useState("All_Leads");
+  const [rotating, setRotating] = useState(false);
+
+  const handleRefresh = async () => {
+    setRotating(true);
+
+    try {
+      await checklead();
+    } finally {
+      setRotating(false);
+    }
+  };
 
   const ClickAllLeads = () => {
     setfilter("All_Leads");
@@ -31,14 +43,6 @@ const LeadsCustomers = (tabs) => {
 
   const ClickAssignedToMe = () => {
     setfilter("AssignedToMe");
-  };
-
-  const ClickConvertedCustomers = () => {
-    setfilter("ConvertedCustomers");
-  };
-
-  const ClickArchived = () => {
-    setfilter("Archived");
   };
 
   const createLead = () => {
@@ -58,36 +62,48 @@ const LeadsCustomers = (tabs) => {
         ]),
     ).values(),
   ];
-  const filteredLeads = lead.filter((item) => {
-    const query = search.toLowerCase().trim();
+  // 1. Main tab filter
+const tabFilteredLeads =
+  filter === "All_Leads"
+    ? lead
+    : lead.filter((item) => item.assignedTo?._id === user?._id);
 
-    const matchesSearch =
-      item.name?.toLowerCase().includes(query) ||
-      item.email?.toLowerCase().includes(query) ||
-      item.number?.toString().includes(query) ||
-      item.company?.toLowerCase().includes(query);
+// 2. Dropdown and search filters
+const filteredLeads = tabFilteredLeads.filter((item) => {
+  const query = search.toLowerCase().trim();
 
-    const matchesStatus =
-      !statusFilter ||
-      item.status?.toLowerCase() === statusFilter.toLowerCase();
+  const matchesSearch =
+    item.name?.toLowerCase().includes(query) ||
+    item.email?.toLowerCase().includes(query) ||
+    item.number?.toString().includes(query) ||
+    item.company?.toLowerCase().includes(query);
 
-    const matchesSource =
-      !sourceFilter ||
-      item.source?.toLowerCase() === sourceFilter.toLowerCase();
+  const matchesStatus =
+    !statusFilter ||
+    item.status?.toLowerCase() === statusFilter.toLowerCase();
 
-    const matchesAssigned =
-      !assignedFilter ||
-      (assignedFilter === "unassigned"
-        ? !item.assignedTo
-        : item.assignedTo?._id === assignedFilter);
+  const matchesSource =
+    !sourceFilter ||
+    item.source?.toLowerCase() === sourceFilter.toLowerCase();
 
-    return matchesSearch && matchesStatus && matchesSource && matchesAssigned;
-  });
+  const matchesAssigned =
+    !assignedFilter ||
+    (assignedFilter === "unassigned"
+      ? !item.assignedTo
+      : item.assignedTo?._id === assignedFilter);
 
   return (
-    <div className={` w-[80%]  `}>
+    matchesSearch &&
+    matchesStatus &&
+    matchesSource &&
+    matchesAssigned
+  );
+});
+
+  return (
+    <div className={` w-[80%] lg:px-4 `}>
       {/* Header */}
-      <div className="shadow shadow-outline-variant flex flex-col justify-center p-4  w-full">
+      <div className=" flex flex-col justify-center p-4  w-full">
         <span className="flex py-2 items-center text-sm">
           {" "}
           <p
@@ -109,43 +125,35 @@ const LeadsCustomers = (tabs) => {
               and round-robin allocation.
             </span>
           </div>
-          <div className="flex items-end justify-end h-20 w-1/2">
-            <button
+          <div className="flex flex-col lg:gap-2 ml-4 items-end justify h-20 w-1/2">
+          <div className="lg:flex  lg:flex-row flex-col gap-2">
+          <button className="text-primary  mb-2 px-4 py-2 shadow shadow-primary lg:text-xl text-[10px] rounded-4xl">Import CSV / Excel</button>
+          <button className="text-primary  mb-2 px-4 py-2 shadow shadow-primary lg:text-xl text-[10px] rounded-4xl">Export Data</button>
+          </div>
+             <button
               onClick={createLead}
               className="flex cursor-pointer rounded-4xl px-3 sm:px-4 py-2 shadow-outline shadow  items-center gap-1 bg-primary-container text-surface-bright"
             >
               <RiAddLine size={18} />
-              <span className="hidden lg:inline">New Lead</span>
+              <span className=" lg:inline">Create</span>
             </button>
           </div>
         </div>
       </div>
 
       {/* Tabs */}
-      <div className=" py-2 rounded overflow-x-auto  flex justify-around [scrollbar-width:none] [&::-webkit-scrollbar]:hidden  w-full shadow-[inset_0_0_4px_rgba(0,0,0,0.08)] shadow-outline ">
+      <div className=" ">
         <button
           onClick={ClickAllLeads}
-          className={` cursor-pointer ${filter == "All_Leads" ? " shadow shadow-on-surface-variant" : ""} outline-none rounded px-4 py-2  `}
+          className={` cursor-pointer  ${filter == "All_Leads" ? " bg-primary text-background shadow shadow-on-surface-variant" : ""} outline-none rounded px-4 py-2  `}
         >
-          All Leads <span>99</span>{" "}
+          All Leads <span></span>{" "}
         </button>
         <button
           onClick={ClickAssignedToMe}
-          className={` cursor-pointer  outline-none rounded px-4 py-2 ${filter == "AssignedToMe" ? " shadow shadow-on-surface-variant" : ""} `}
+          className={` cursor-pointer  outline-none rounded px-4 py-2 ${filter == "AssignedToMe" ? " bg-primary text-background shadow shadow-on-surface-variant" : ""} `}
         >
-          Assigned to Me <span>99</span>{" "}
-        </button>
-        <button
-          onClick={ClickConvertedCustomers}
-          className={` cursor-pointeroutline-none rounded px-4 py-2 ${filter == "ConvertedCustomers" ? " shadow shadow-on-surface-variant" : ""} `}
-        >
-          Converted Customers <span>99</span>{" "}
-        </button>
-        <button
-          onClick={ClickArchived}
-          className={` cursor-pointer outline-none rounded px-4 py-2 ${filter == "Archived" ? " shadow shadow-on-surface-variant" : ""} `}
-        >
-          Archived <span>99</span>{" "}
+          Assigned to Me <span></span>{" "}
         </button>
       </div>
 
@@ -153,7 +161,7 @@ const LeadsCustomers = (tabs) => {
       <div className="overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
         <div className="className= flex w-full  lg:flex-wrap items-center gap-2 px-4 py-2">
           {/* SEARCH */}
-          <div className="flex h-10 w-30 shrink-0 items-center gap-2 overflow-hidden rounded-4xl border border-outline px-3 shadow-[inset_0_0_5px_rgba(0,0,0,0.08)]  sm:h-11 lg:w-105">
+          <div className="flex h-10 w-30 shrink-0 items-center gap-2 overflow-hidden rounded-4xl border border-outline px-3 shadow-[inset_0_0_5px_rgba(0,0,0,0.08)]  lg:h-11 lg:w-100">
             <RiSearchLine size={18} className="shrink-0" />
 
             <input
@@ -223,14 +231,20 @@ const LeadsCustomers = (tabs) => {
             </select>
           </div>
 
-          <button className="shrink-0 rounded-full p-2">
-            <RiRefreshLine />
+          {/* Refrase */}
+          <button
+            onClick={handleRefresh}
+            disabled={loading}
+            className="shrink-0 rounded-full p-2"
+          >
+            <RiRefreshLine className={rotating ? "animate-spin" : ""} size={22} />
           </button>
         </div>
       </div>
 
       {/* Leads Data */}
-      <div className="h-70 overflow-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+      <div className="h-70  [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        {/* Header */}
         <div
           className="
       grid min-w-[720px]
@@ -270,6 +284,8 @@ const LeadsCustomers = (tabs) => {
             ACTION
           </h1>
         </div>
+        <div className=" lg:h-53 h-77 overflow-auto ">
+
         {filteredLeads.map((Data) => (
           <div
             key={Data._id}
@@ -287,7 +303,7 @@ const LeadsCustomers = (tabs) => {
               <img
                 className="h-7 w-7 shrink-0 rounded-full lg:h-15 lg:w-15"
                 src={`${rootUrl}${Data.avatar}`}
-                alt="Ritu Raj"
+                alt={Data.name}
               />
 
               <div className="min-w-0">
@@ -321,17 +337,21 @@ const LeadsCustomers = (tabs) => {
             <div className="flex min-w-0 items-center gap-2">
               <img
                 className="h-7 w-7 shrink-0 rounded-full lg:h-10 lg:w-10"
-                src={`${rootUrl}${Data.assignedTo.avatar}`}
-                alt="Sumira Mahto"
+                src={
+                  Data.assignedTo?.avatar
+                    ? `${rootUrl}${Data.assignedTo.avatar}`
+                    : undefined
+                }
+                alt={Data.assignedTo?.name || "Unassigned"}
               />
 
               <div className="min-w-0">
                 <h1 className="truncate text-[10px] lg:text-xl">
-                  {Data.assignedTo.name}
+                  {Data.assignedTo?.name || "Unassigned"}
                 </h1>
 
                 <p className="truncate text-[9px] opacity-60 lg:text-sm">
-                  {Data.assignedTo.company}
+                  {Data.assignedTo?.email || ""}
                 </p>
               </div>
             </div>
@@ -340,30 +360,33 @@ const LeadsCustomers = (tabs) => {
             <div className="flex items-center justify-end gap-1 lg:gap-3">
               <button
                 type="button"
-                className="rounded-full p-1.5 hover:bg-surface-variant"
+                onClick={() => navigate(`/leads/${Data.leadId}`)}
+                className="rounded-full shadow shadow-outline p-1.5 hover:bg-surface-variant"
                 aria-label="View lead"
               >
-                <RiEyeLine size={18} />
+                <RiEyeLine className="  text-primary " size={18} />
               </button>
 
               <button
                 type="button"
-                className="rounded-full p-1.5 hover:bg-surface-variant"
+                className="rounded-full shadow shadow-outline p-1.5 hover:bg-surface-variant"
                 aria-label="Edit lead"
               >
-                <RiPencilLine size={18} />
+                <RiPencilLine className="  text-primary " size={18} />
               </button>
 
               <button
+                onClick={() => navigate(`/leads/${Data.leadId}`)}
                 type="button"
-                className="rounded-full p-1.5 hover:bg-surface-variant"
+                className="rounded-full shadow shadow-outline p-1.5 hover:bg-surface-variant"
                 aria-label="More actions"
               >
-                <RiMore2Line size={18} />
+                <RiMore2Line className="  text-primary " size={18} />
               </button>
             </div>
           </div>
         ))}
+        </div>
       </div>
     </div>
   );
