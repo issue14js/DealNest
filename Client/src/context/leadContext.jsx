@@ -7,7 +7,7 @@ export function LeadProvider({ children }) {
   const [lead, setlead] = useState();
   const [createlead, setcreatelead] = useState(false);
   const [loading, setLoading] = useState(true);
-  const rootUrl = "http://localhost:3000";
+  const rootUrl = "https://deal-nest-v5dt.vercel.app";
   const {user} = useAuth()
 
   const checklead = async () => {

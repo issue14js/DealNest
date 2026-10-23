@@ -6,7 +6,7 @@ export const AuthContext = createContext();
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(``);
   const [loading, setLoading] = useState(true);
-  const rootUrl = "http://localhost:3000";
+  const rootUrl = "https://deal-nest-v5dt.vercel.app";
 
   const checkAuth = async () => {
     try {
